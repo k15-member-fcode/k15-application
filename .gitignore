@@ -5,7 +5,11 @@
 /.pnp
 .pnp.js
 /src/utils/configFirebase.js
+<<<<<<< HEAD
 /.firebase
+=======
+./firebase
+>>>>>>> 527bf1f5fc618a9fff6a2e2eccc0eb55342f416d
 .firebaserc
 firebase.json
 database.rules.json
