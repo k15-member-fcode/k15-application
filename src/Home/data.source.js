@@ -1,4 +1,5 @@
 import React from 'react';
+import socialLogo from './social.png';
 export const Nav30DataSource = {
   wrapper: { className: 'header3 home-page-wrapper jzih1dpqqrg-editor_css' },
   page: { className: 'home-page' },
@@ -84,7 +85,7 @@ export const Nav00DataSource = {
             {
               children: (
                 <>
-                  <p>Home</p>
+                  <p>Trang chủ</p>
                 </>
               ),
               name: 'text',
@@ -101,7 +102,7 @@ export const Nav00DataSource = {
             {
               children: (
                 <>
-                  <p>Introduction</p>
+                  <p>Giới thiệu</p>
                 </>
               ),
               name: 'text',
@@ -118,24 +119,7 @@ export const Nav00DataSource = {
             {
               children: (
                 <>
-                  <p>About F-Code</p>
-                </>
-              ),
-              name: 'text',
-            },
-          ],
-        },
-      },
-      {
-        name: 'item3',
-        className: 'header0-item',
-        children: {
-          href: '#',
-          children: [
-            {
-              children: (
-                <>
-                  <p>Top Q&amp;A</p>
+                  <p>Top Q&A</p>
                 </>
               ),
               name: 'text',
@@ -182,7 +166,7 @@ export const Feature30DataSource = {
         name: 'title',
         children: (
           <>
-            <p>Introduction</p>
+            <p>Giới thiệu</p>
           </>
         ),
         className: 'title-h1',
@@ -192,7 +176,7 @@ export const Feature30DataSource = {
         className: 'title-content',
         children: (
           <>
-            <p>Explain meaning of F-Code and this application</p>
+            <p>Vì sao chúng tôi tuyển bạn?</p>
           </>
         ),
       },
@@ -210,14 +194,14 @@ export const Feature30DataSource = {
           icon: {
             className: 'content3-icon',
             children:
-              'https://zos.alipayobjects.com/rmsportal/ScHBSdwpTkAHZkJ.png',
+              'https://image.flaticon.com/icons/svg/599/599502.svg',
           },
           textWrapper: { className: 'content3-text' },
-          title: { className: 'content3-title', children: '企业资源管理' },
+          title: { className: 'content3-title', children: '' },
           content: {
             className: 'content3-content',
             children:
-              '云资源集中编排、弹性伸缩、持续发布和部署，高可用及容灾。',
+              'Chia sẻ niềm đam mê về lập trình: CLB tìm kiếm các bạn thành viên có tinh thần học hỏi, nhiệt huyết, cống hiến hết mình vì học thuật',
           },
         },
       },
@@ -230,14 +214,14 @@ export const Feature30DataSource = {
           icon: {
             className: 'content3-icon',
             children:
-              'https://zos.alipayobjects.com/rmsportal/NKBELAOuuKbofDD.png',
+              socialLogo,
           },
           textWrapper: { className: 'content3-text' },
-          title: { className: 'content3-title', children: '云安全' },
+          title: { className: 'content3-title', children: '' },
           content: {
             className: 'content3-content',
             children:
-              '按金融企业安全要求打造的完整云上安全体系，全方位保障金融应用及数据安全。',
+              'Tạo sân chơi giao lưu và học hỏi: Các bạn sinh viên sẽ có nhiều cơ hội học tập và trau dồi kiến thức với các bạn đồng trang lứa cũng như các anh chị khóa trên.',
           },
         },
       },
@@ -250,77 +234,17 @@ export const Feature30DataSource = {
           icon: {
             className: 'content3-icon',
             children:
-              'https://zos.alipayobjects.com/rmsportal/xMSBjgxBhKfyMWX.png',
+              'https://www.psionline.com/wp-content/uploads/skill-innovation.png',
           },
           textWrapper: { className: 'content3-text' },
-          title: { className: 'content3-title', children: '云监控' },
+          title: { className: 'content3-title', children: '' },
           content: {
             className: 'content3-content',
             children:
-              '分布式云环境集中监控，统一资源及应用状态视图，智能分析及故障定位。',
+              'Tạo cơ hội phát triển kỹ năng mềm: Ngoài lập trình, CLB còn tổ chức nhiều hoạt động ngoại khóa để rèn luyện tinh thần trách nhiệm và phát triển tư duy sáng tạo cho các bạn sinh viên.',
           },
         },
-      },
-      {
-        name: 'block3',
-        className: 'content3-block',
-        md: 8,
-        xs: 24,
-        children: {
-          icon: {
-            className: 'content3-icon',
-            children:
-              'https://zos.alipayobjects.com/rmsportal/MNdlBNhmDBLuzqp.png',
-          },
-          textWrapper: { className: 'content3-text' },
-          title: { className: 'content3-title', children: '移动' },
-          content: {
-            className: 'content3-content',
-            children:
-              '一站式移动金融APP开发及全面监控；丰富可用组件，动态发布和故障热修复。',
-          },
-        },
-      },
-      {
-        name: 'block4',
-        className: 'content3-block',
-        md: 8,
-        xs: 24,
-        children: {
-          icon: {
-            className: 'content3-icon',
-            children:
-              'https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png',
-          },
-          textWrapper: { className: 'content3-text' },
-          title: { className: 'content3-title', children: '分布式中间件' },
-          content: {
-            className: 'content3-content',
-            children:
-              '金融级联机交易处理中间件，大规模分布式计算机，数万笔/秒级并发能力，严格保证交易数据统一性。',
-          },
-        },
-      },
-      {
-        name: 'block5',
-        className: 'content3-block',
-        md: 8,
-        xs: 24,
-        children: {
-          icon: {
-            className: 'content3-icon',
-            children:
-              'https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png',
-          },
-          textWrapper: { className: 'content3-text' },
-          title: { className: 'content3-title', children: '大数据' },
-          content: {
-            className: 'content3-content',
-            children:
-              '一站式、全周期大数据协同工作平台，PB级数据处理、毫秒级数据分析工具。',
-          },
-        },
-      },
+      }
     ],
   },
 };
