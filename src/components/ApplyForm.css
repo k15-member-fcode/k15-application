@@ -1,0 +1,37 @@
+.btn-right {
+  float: right;
+}
+.btn-left {
+  float: left;
+}
+
+.PersonalForm Form{
+  width: 60%;
+  text-align: left;
+  margin-top: 10px;
+  margin-left: 10%;
+}
+
+.AskForm Form{
+  width: 70%;
+  text-align: left;
+  margin-top: 10px;
+  margin-left: 10%;
+}
+.AskForm TextArea {
+  resize: none;
+}
+Form .ant-form-item:last-child {
+  width: 100%;
+  margin-left: 30%;
+}
+.AskForm Button {
+  margin: 10px;
+}
+
+.ConfirmForm Form{
+  width: 70%;
+  text-align: left;
+  margin-top: 10px;
+  margin-left: 10%;
+}
