@@ -12,7 +12,7 @@ export const createNotification = noti => {
 };
 
 const getStyleNotification = notiStatus => {
-  const color = notiStatus === "err" ? "#	#bb2124" : "#22bb33";
+  const color = notiStatus === "err" ? "#bb2124" : "#22bb33";
   return {
     color
   };
