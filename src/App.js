@@ -3,7 +3,7 @@ import Home from "./Home";
 import ApplicationPage from "./components/ApplicationPage";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-function App(props) {
+const App = (props) => {
   return (
     <Router>
       <div className="App">
