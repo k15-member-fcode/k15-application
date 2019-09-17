@@ -5,6 +5,8 @@ import "firebase/database";
 import "firebase/auth";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./ApplicationPage.css";
+import ApplyForm from "./ApplyForm";
+
 const dataFirebase = firebase.database();
 const userRef = dataFirebase.ref("users");
 
@@ -40,17 +42,17 @@ const ApplicationPage = () => {
         {isLogin ? (
           isAuth ? (
             <div>
-              <h2>Hi {firebase.auth().currentUser.displayName}!</h2>
-              <Button type="danger" onClick={() => firebase.auth().signOut()}>
-                Sign out
-              </Button>
+              <h1>ĐĂNG KÝ THÀNH VIÊN CLB F-CODE</h1>
+              <h2>Xin chào {firebase.auth().currentUser.displayName}!</h2>
+              <p>Vui lòng hoàn thành form sau để đăng ký thành viên của F-Code</p>
+              <ApplyForm />
             </div>
           ) : (
-            <h1>Sorry! You have already signed up for F-Code!</h1>
+            <h1 className="notiError">Sorry! You have already signed up for F-Code!</h1>
           )
         ) : (
           <div>
-            <h1>Please sign up before to go this page</h1>
+            <h1 className="notiError">Please sign up before to go this page</h1>
             <Button type="primary">
               <a href="/">Back to home</a>
             </Button>
