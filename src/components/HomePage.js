@@ -1,6 +1,6 @@
 import React from "react";
 import "./css/HomePage.css";
-import { Icon } from "antd";
+import { Icon, BackTop, Tooltip } from "antd";
 import { OverPack } from "rc-scroll-anim";
 import QueueAnim from "rc-queue-anim";
 import Logo from "./img/logo.png";
@@ -90,7 +90,11 @@ const HomePage = () => {
             <QueueAnim leaveReverse>
               <div className="col-1-of-4" key="a">
                 <div className="criteria-box">
-                <Icon type="dashboard" theme="twoTone" className="criteria-box__icon" />
+                  <Icon
+                    type="dashboard"
+                    theme="twoTone"
+                    className="criteria-box__icon"
+                  />
                   <h3 className="heading-tertiary u-margin-bottom-small">
                     Tiêu chí 1
                   </h3>
@@ -102,7 +106,11 @@ const HomePage = () => {
               </div>
               <div className="col-1-of-4" key="b">
                 <div className="criteria-box">
-                  <Icon type="book" theme="twoTone" className="criteria-box__icon" />
+                  <Icon
+                    type="book"
+                    theme="twoTone"
+                    className="criteria-box__icon"
+                  />
                   <h3 className="heading-tertiary u-margin-bottom-small">
                     Tiêu chí 2
                   </h3>
@@ -114,7 +122,11 @@ const HomePage = () => {
               </div>
               <div className="col-1-of-4" key="c">
                 <div className="criteria-box">
-                  <Icon type="idcard" theme="twoTone" className="criteria-box__icon" />
+                  <Icon
+                    type="idcard"
+                    theme="twoTone"
+                    className="criteria-box__icon"
+                  />
                   <h3 className="heading-tertiary u-margin-bottom-small">
                     Tiêu chí 3
                   </h3>
@@ -126,7 +138,11 @@ const HomePage = () => {
               </div>
               <div className="col-1-of-4" key="d">
                 <div className="criteria-box">
-                  <Icon type="hourglass" theme="twoTone" className="criteria-box__icon" />
+                  <Icon
+                    type="hourglass"
+                    theme="twoTone"
+                    className="criteria-box__icon"
+                  />
                   <h3 className="heading-tertiary u-margin-bottom-small">
                     Tiêu chí 4
                   </h3>
@@ -357,6 +373,9 @@ const HomePage = () => {
           <span> Bản quyền © 2019 F-Code HCM </span>
         </a>
       </footer>
+      <Tooltip placement="left" title="Về đầu trang">
+        <BackTop />
+      </Tooltip>
     </div>
   );
 };

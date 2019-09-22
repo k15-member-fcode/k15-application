@@ -606,6 +606,14 @@ body {
   padding: 5rem 0;
 }
 
+.ant-back-top-content {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.ant-back-top {
+  bottom: 50px;
+  right: 50px;
+}
+
 @media (max-width: 1200px) {
   .row {
     padding: 0 15px;
