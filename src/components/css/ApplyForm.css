@@ -72,6 +72,5 @@ Form, .Login-Button {
 }
 
 .AskForm .ant-select-selection {
-  color: red;
   min-height: 11.5vh;
 }
