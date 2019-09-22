@@ -1,16 +1,18 @@
-import React from "react";
-import { Form, Input, Button, Select } from "antd";
+import React, { useState } from "react";
+import { Form, Input, Button, Select, Icon } from "antd";
 
-// let processedData = {
-//   knowledge: "",
-//   experience: "",
-//   reason: "",
-//   pros: "",
-//   cons: "",
-//   expect: "",
-//   dedication: "",
-//   otherClub: ""
-// };
+const clubToString = clubList => {
+  let result = "";
+  let str = "";
+  Object.keys(clubList).forEach(function(item, key) {
+    key += 1;
+    str += key + ". " + clubList[item] + "; ";
+  });
+  result = str.substring(0, str.length - 2);
+  result += ".";
+  console.log(result);
+  return result;
+};
 
 const processData = submitData => {
   const knowledge = submitData.knowledge;
@@ -20,8 +22,11 @@ const processData = submitData => {
   const cons = submitData.cons;
   const expect = submitData.expect;
   const dedication = submitData.dedication;
-  const question = submitData.question;
-  const otherClub = submitData.otherClub;
+  const question = submitData.question === undefined ? "" : submitData.question;
+  const otherClub =
+    submitData.otherClub === undefined
+      ? ""
+      : clubToString(submitData.otherClub);
   return {
     knowledge,
     experience,
@@ -70,6 +75,11 @@ const clubList = [
 ];
 
 const AskForm = props => {
+  const [loading, setLoading] = useState(true);
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 500);
   const prevStep = props.prevStep;
   const nextStep = props.nextStep;
 
@@ -101,147 +111,158 @@ const AskForm = props => {
 
   return (
     <div className="AskForm">
-      <p>Phần 2/3</p>
-      <h3>Giới thiệu, đánh giá bản thân</h3>
-      <Form {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item label="Nêu một cách ngắn gọn hiểu biết của bạn về ngành này">
-          {getFieldDecorator("knowledge", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.knowledge
-          })(
-            <TextArea
-              rows={3}
-              placeholder="Ngành này làm những việc gì, có những công việc gì, cần những kiến thức gì,..."
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="Bạn có kinh nghiệm như thế nào trong lĩnh vực CNTT?"
-          colon={false}
-        >
-          {getFieldDecorator("experience", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.experience
-          })(
-            <TextArea
-              rows={3}
-              placeholder="Biết được ngôn ngữ lập trình gì, đã từng tham gia những cuộc thi nào, đạt được những giải thưởng gì,…"
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="Tại sao bạn lại muốn tham gia CLB F-Code?"
-          colon={false}
-        >
-          {getFieldDecorator("reason", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.reason
-          })(<TextArea rows={3} />)}
-        </Form.Item>
-        <Form.Item label="Ưu điểm của bạn là gì?" colon={false}>
-          {getFieldDecorator("pros", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.pros
-          })(<TextArea rows={3} />)}
-        </Form.Item>
-        <Form.Item label="Khuyết điểm của bạn là gì?" colon={false}>
-          {getFieldDecorator("cons", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.cons
-          })(<TextArea rows={3} />)}
-        </Form.Item>
-        <Form.Item label="Điều bạn mong đợi khi tham gia CLB?" colon={false}>
-          {getFieldDecorator("expect", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.expect
-          })(<TextArea rows={3} />)}
-        </Form.Item>
-        <Form.Item
-          label="Nếu trở thành thành viên chính thức, bạn sẽ làm gì để phát triển CLB?"
-          colon={false}
-        >
-          {getFieldDecorator("dedication", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng trả lời câu hỏi này"
-              }
-            ],
-            initialValue: processedData.dedication
-          })(<TextArea rows={3} />)}
-        </Form.Item>
-        <Form.Item
-          label="Nếu trở thành thành viên chính thức, bạn sẽ làm gì để phát triển CLB?"
-          colon={false}
-        >
-          {getFieldDecorator("question", {
-            initialValue: processedData.question
-          })(<TextArea rows={3} />)}
-        </Form.Item>
-        <Form.Item
-          label="Ngoài F-Code, bạn còn tham gia CLB nào?"
-          colon={false}
-        >
-          {getFieldDecorator("otherClub", {
-            rules: [{ type: "array" }],
-            initialValue:
-              processedData.otherClub === ""
-                ? undefined
-                : processedData.otherClub
-          })(
-            <Select
-              mode="multiple"
-              placeholder="Để trống nếu không tham gia clb nào khác"
-            >
-              {clubList.map((club, index) => {
-                return (
-                  <Option key={index} value={club}>
-                    {club}
-                  </Option>
-                );
-              })}
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" onClick={handlePrev} className="btn-left">
-            Trở về
-          </Button>
-          <Button htmlType="submit" type="primary" className="btn-right">
-            Tiếp tục
-          </Button>
-        </Form.Item>
-      </Form>
+      {loading ? (
+        <div>
+          <Icon type="loading" className="icon-primary icon-center" />
+        </div>
+      ) : (
+        <Form {...formItemLayout} onSubmit={handleSubmit}>
+          <Form.Item label="Nêu một cách ngắn gọn hiểu biết của bạn về ngành này">
+            {getFieldDecorator("knowledge", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.knowledge
+            })(
+              <TextArea
+                rows={3}
+                placeholder="Ngành này làm những việc gì, có những công việc gì, cần những kiến thức gì,..."
+              />
+            )}
+          </Form.Item>
+          <Form.Item
+            label="Bạn có kinh nghiệm như thế nào trong lĩnh vực CNTT?"
+            colon={false}
+          >
+            {getFieldDecorator("experience", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.experience
+            })(
+              <TextArea
+                rows={3}
+                placeholder="Biết được ngôn ngữ lập trình gì, đã từng tham gia những cuộc thi nào, đạt được những giải thưởng gì,…"
+              />
+            )}
+          </Form.Item>
+          <Form.Item
+            label="Tại sao bạn lại muốn tham gia CLB F-Code?"
+            colon={false}
+          >
+            {getFieldDecorator("reason", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.reason
+            })(<TextArea rows={3} />)}
+          </Form.Item>
+          <Form.Item label="Ưu điểm của bạn là gì?" colon={false}>
+            {getFieldDecorator("pros", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.pros
+            })(<TextArea rows={3} />)}
+          </Form.Item>
+          <Form.Item label="Khuyết điểm của bạn là gì?" colon={false}>
+            {getFieldDecorator("cons", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.cons
+            })(<TextArea rows={3} />)}
+          </Form.Item>
+          <Form.Item
+            label="Điều bạn mong đợi khi tham gia CLB là gì?"
+            colon={false}
+          >
+            {getFieldDecorator("expect", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.expect
+            })(<TextArea rows={3} />)}
+          </Form.Item>
+          <Form.Item
+            label="Nếu trở thành thành viên chính thức, bạn sẽ làm gì để phát triển CLB?"
+            colon={false}
+          >
+            {getFieldDecorator("dedication", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng trả lời câu hỏi này"
+                }
+              ],
+              initialValue: processedData.dedication
+            })(<TextArea rows={3} />)}
+          </Form.Item>
+          <Form.Item label="Bạn có câu hỏi gì gửi đến CLB không?" colon={false}>
+            {getFieldDecorator("question", {
+              initialValue: processedData.question
+            })(
+              <TextArea
+                rows={3}
+                placeholder="Để trống nếu bạn không có câu hỏi nào"
+              />
+            )}
+          </Form.Item>
+          <Form.Item
+            label="Ngoài F-Code, bạn còn tham gia CLB nào khác?"
+            colon={false}
+          >
+            {getFieldDecorator("otherClub", {
+              rules: [{ type: "array" }],
+              initialValue:
+                processedData.otherClub === ""
+                  ? undefined
+                  : processedData.otherClub
+            })(
+              <Select
+                mode="multiple"
+                placeholder="Để trống nếu bạn không tham gia CLB nào khác"
+              >
+                {clubList.map((club, index) => {
+                  return (
+                    <Option key={index} value={club}>
+                      {club}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
+          </Form.Item>
+          <Form.Item>
+            <div className="btn-container">
+              <Button type="primary" htmlType="submit" className="btn-right">
+                Tiếp tục
+              </Button>
+              <Button onClick={handlePrev} className="btn-right">
+                Trở về
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
+      )}
     </div>
   );
 };

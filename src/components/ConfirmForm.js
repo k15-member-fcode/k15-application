@@ -1,11 +1,5 @@
-import React from "react";
-import { Form, Button, Radio } from "antd";
-
-// let processedData = {
-//   isReady: "Chưa sẵn sàng",
-//   isRead: "Chưa đọc",
-//   isVerify: false
-// };
+import React, { useState } from "react";
+import { Form, Button, Radio, Icon } from "antd";
 
 const processData = submitData => {
   const isReady = submitData.isReady;
@@ -33,8 +27,14 @@ const readyList = ["Đã sẵn sàng", "Chưa sẵn sàng"];
 const readList = ["Đã đọc", "Chưa đọc"];
 
 const ConfirmForm = props => {
+  const [loading, setLoading] = useState(true);
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 500);
+
   const prevStep = props.prevStep;
-  const submitData = props.submit;
+  const nextStep = props.nextStep;
 
   const { getFieldDecorator } = props.form;
 
@@ -46,9 +46,8 @@ const ConfirmForm = props => {
     props.form.validateFields((err, values) => {
       if (!err) {
         processedData = processData(values);
-        updateData('confirm', processedData);
-        submitData();
-        console.log(processedData);
+        updateData("confirm", processedData);
+        nextStep();
       }
     });
   };
@@ -57,73 +56,79 @@ const ConfirmForm = props => {
     event.preventDefault();
     props.form.validateFields((err, values) => {
       processedData = processData(values);
-      updateData('confirm', processedData);
+      updateData("confirm", processedData);
       prevStep();
     });
   };
 
   return (
     <div className="ConfirmForm">
-      <p>Phần 3/3</p>
-      <h3>Xác nhận</h3>
-      <Form {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item
-          label="Bạn đã sẵn sàng chấp nhận thử thách chưa?"
-          colon={false}
-        >
-          {getFieldDecorator("isReady", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng chọn một mục"
-              }
-            ],
-            initialValue: processedData.isReady
-          })(
-            <Radio.Group>
-              {readyList.map((ready, index) => {
-                return (
-                  <Radio key={index} value={ready}>
-                    {ready}
-                  </Radio>
-                );
-              })}
-            </Radio.Group>
-          )}
-        </Form.Item>
-        <Form.Item
-          label="Bạn đã đọc hết toàn bộ thông tin của form này chưa?"
-          colon={false}
-        >
-          {getFieldDecorator("isRead", {
-            rules: [
-              {
-                required: true,
-                message: "Vui lòng chọn một mục"
-              }
-            ],
-            initialValue: processedData.isRead
-          })(
-            <Radio.Group buttonStyle="outline">
-              {readList.map((read, index) => {
-                return (
-                  <Radio key={index} value={read}>
-                    {read}
-                  </Radio>
-                );
-              })}
-            </Radio.Group>
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" onClick={handlePrev} className="btn-left">
-            Trở về
-          </Button>
-          <Button htmlType="submit" type="primary" className="btn-right">
-            Gửi đăng ký
-          </Button>
-        </Form.Item>
-      </Form>
+      {loading ? (
+        <div>
+          <Icon type="loading" className="icon-primary icon-center" />
+        </div>
+      ) : (
+        <Form {...formItemLayout} onSubmit={handleSubmit}>
+          <Form.Item
+            label="Bạn đã sẵn sàng chấp nhận thử thách chưa?"
+            colon={false}
+          >
+            {getFieldDecorator("isReady", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng chọn một mục"
+                }
+              ],
+              initialValue: processedData.isReady
+            })(
+              <Radio.Group>
+                {readyList.map((ready, index) => {
+                  return (
+                    <Radio key={index} value={ready}>
+                      {ready}
+                    </Radio>
+                  );
+                })}
+              </Radio.Group>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="Bạn đã đọc hết toàn bộ thông tin của form này chưa?"
+            colon={false}
+          >
+            {getFieldDecorator("isRead", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng chọn một mục"
+                }
+              ],
+              initialValue: processedData.isRead
+            })(
+              <Radio.Group buttonStyle="outline">
+                {readList.map((read, index) => {
+                  return (
+                    <Radio key={index} value={read}>
+                      {read}
+                    </Radio>
+                  );
+                })}
+              </Radio.Group>
+            )}
+          </Form.Item>
+          <Form.Item>
+            <div className="btn-container">
+              <Button type="primary" htmlType="submit" className="btn-right">
+                Gửi đăng ký
+              </Button>
+              <Button onClick={handlePrev} className="btn-right">
+                Trở về
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
+      )}
     </div>
   );
 };

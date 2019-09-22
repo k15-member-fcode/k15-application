@@ -1,17 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import firebase from "firebase/app";
 import "firebase/database";
+import Login from "./Login";
 import PersonalForm from "./PersonalForm";
 import AskForm from "./AskForm";
 import ConfirmForm from "./ConfirmForm";
-import "./ApplyForm.css";
-import { createNotification } from "./Common/Notification";
+import ConfirmDrawer from "./ConfirmDrawer";
+import "./css/ApplyForm.css";
+import { firebaseConfig } from "../utils/configFirebase";
+
+firebase.initializeApp({
+  apiKey: firebaseConfig.apiKey,
+  authDomain: firebaseConfig.authDomain,
+  databaseURL: firebaseConfig.databaseURL,
+  projectId: firebaseConfig.projectId,
+  storageBucket: firebaseConfig.storageBucket,
+  messagingSenderId: firebaseConfig.messagingSenderId
+});
 
 const dbUser = firebase.database();
 
-const ApplyForm = () => {
-  const [step, setStep] = useState(1);
-  const isBack = useRef(false);
+const ApplyForm = props => {
+  const [step, setStep] = useState(props.step);
+const [send, setSend] = useState(false);
+
+  useEffect(() => {
+    setStep(props.step);
+  }, [props.step]);
+
   const dataUser = useRef({
     personal: {
       fullname: undefined,
@@ -40,36 +56,36 @@ const ApplyForm = () => {
     },
     timeCreate: undefined
   });
+  const onChange = props.setStep;
   const nextStep = () => {
-    setStep(step + 1);
+    onChange(step + 1);
   };
 
   const prevStep = () => {
-    setStep(step - 1);
-    isBack.current = true;
+    onChange(step - 1);
   };
 
   const updateData = (target, data) => {
     dataUser.current[target] = data;
   };
-  const notiSuccess = {
-    title: "Thành công",
-    content:
-      "Thông tin đăng ký thành viên của bạn đã được ghi nhận thành công. Vui lòng kiểm tra địa chỉ email để xác nhận. Xin cảm ơn!",
-    status: "success"
-  };
-  const notiErr = {
-    title: "Thất bại",
-    content:
-      "Lỗi, thông tin đăng ký thành viên của bạn đã tồn tại. Vui lòng kiểm tra địa chỉ email để xác nhận. Xin cảm ơn!",
-    status: "err"
-  };
+  // const notiSuccess = {
+  //   title: "Thành công",
+  //   content:
+  //     "Thông tin đăng ký thành viên của bạn đã được ghi nhận thành công. Vui lòng kiểm tra địa chỉ email để xác nhận. Xin cảm ơn!",
+  //   status: "success"
+  // };
+  // const notiErr = {
+  //   title: "Thất bại",
+  //   content:
+  //     "Lỗi, thông tin đăng ký thành viên của bạn đã tồn tại. Vui lòng kiểm tra địa chỉ email để xác nhận. Xin cảm ơn!",
+  //   status: "err"
+  // };
   const writeInfoToDatabase = () => {
     const studentID = dataUser.current.personal.studentID;
     const validRef = dbUser.ref("verify").child(studentID);
     validRef.once("value", snapshot => {
       if (snapshot.val()) {
-        createNotification(notiErr);
+        setSend(false);
       } else {
         let date = new Date();
         const day = String(date.getDate()).padStart(2, "0");
@@ -82,20 +98,23 @@ const ApplyForm = () => {
         const userRef = dbUser.ref("users");
         const newRef = userRef.child(studentID);
         newRef.set(dataUser.current);
-        createNotification(notiSuccess);
+        // createNotification(notiSuccess);
         const verifyUpdate = {};
         verifyUpdate[studentID] = false;
         dbUser.ref("verify").update(verifyUpdate);
+        setSend(true);
       }
     });
   };
 
   switch (step) {
+    case 0:
+      return <Login nextStep={nextStep} />;
     case 1:
       return (
         <PersonalForm
           nextStep={nextStep}
-          isBack={isBack.current}
+          prevStep={prevStep}
           data={dataUser.current}
           update={updateData}
         />
@@ -105,7 +124,6 @@ const ApplyForm = () => {
         <AskForm
           nextStep={nextStep}
           prevStep={prevStep}
-          isBack={isBack.current}
           data={dataUser.current}
           update={updateData}
         />
@@ -113,12 +131,14 @@ const ApplyForm = () => {
     case 3:
       return (
         <ConfirmForm
+          nextStep={nextStep}
           prevStep={prevStep}
           data={dataUser.current}
           update={updateData}
-          submit={writeInfoToDatabase}
         />
       );
+    case 4:
+      return <ConfirmDrawer onChange={onChange} submit={writeInfoToDatabase} data={dataUser.current} isSend={send}/>;
     default:
       return <h1>Not found</h1>;
   }
