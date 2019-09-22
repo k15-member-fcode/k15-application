@@ -8,16 +8,6 @@ import {
   facebookValidation
 } from "../utils/config";
 
-// let processedData = {
-//   fullname: "",
-//   studentID: "",
-//   major: "SE",
-//   gender: "Nam",
-//   email: "",
-//   phone: "",
-//   facebook: ""
-// };
-
 const processData = submitData => {
   const fullname = submitData.fullname;
   const studentID = submitData.studentID;
@@ -93,7 +83,6 @@ const PersonalForm = props => {
     let timeOut = isSubmit.current ? 0 : 3000;
     setTimeout(() => {
       let studentID = value;
-      // if (!isSubmit.current) {
       if (studentID !== undefined) {
         if (studentID.length !== 0) {
           if (!studentIdValidation.test(studentID)) {
@@ -106,7 +95,6 @@ const PersonalForm = props => {
           }
         }
       }
-      // }
       callback();
     }, timeOut);
   };

@@ -8,6 +8,7 @@ import ConfirmForm from "./ConfirmForm";
 import ConfirmDrawer from "./ConfirmDrawer";
 import "./css/ApplyForm.css";
 import { firebaseConfig } from "../utils/configFirebase";
+import { clubToString } from "../Common/clubToString";
 
 firebase.initializeApp({
   apiKey: firebaseConfig.apiKey,
@@ -22,7 +23,7 @@ const dbUser = firebase.database();
 
 const ApplyForm = props => {
   const [step, setStep] = useState(props.step);
-const [send, setSend] = useState(false);
+  const [send, setSend] = useState(false);
 
   useEffect(() => {
     setStep(props.step);
@@ -68,18 +69,7 @@ const [send, setSend] = useState(false);
   const updateData = (target, data) => {
     dataUser.current[target] = data;
   };
-  // const notiSuccess = {
-  //   title: "Thành công",
-  //   content:
-  //     "Thông tin đăng ký thành viên của bạn đã được ghi nhận thành công. Vui lòng kiểm tra địa chỉ email để xác nhận. Xin cảm ơn!",
-  //   status: "success"
-  // };
-  // const notiErr = {
-  //   title: "Thất bại",
-  //   content:
-  //     "Lỗi, thông tin đăng ký thành viên của bạn đã tồn tại. Vui lòng kiểm tra địa chỉ email để xác nhận. Xin cảm ơn!",
-  //   status: "err"
-  // };
+
   const writeInfoToDatabase = () => {
     const studentID = dataUser.current.personal.studentID;
     const validRef = dbUser.ref("verify").child(studentID);
@@ -95,10 +85,12 @@ const [send, setSend] = useState(false);
         const min = String(date.getMinutes()).padStart(2, "0");
         date = hours + ":" + min + " - " + day + "/" + mon + "/" + year;
         dataUser.current.timeCreate = date;
+        dataUser.current.ask.otherClub = clubToString(
+          dataUser.current.ask.otherClub
+        );
         const userRef = dbUser.ref("users");
         const newRef = userRef.child(studentID);
         newRef.set(dataUser.current);
-        // createNotification(notiSuccess);
         const verifyUpdate = {};
         verifyUpdate[studentID] = false;
         dbUser.ref("verify").update(verifyUpdate);
@@ -138,7 +130,14 @@ const [send, setSend] = useState(false);
         />
       );
     case 4:
-      return <ConfirmDrawer onChange={onChange} submit={writeInfoToDatabase} data={dataUser.current} isSend={send}/>;
+      return (
+        <ConfirmDrawer
+          onChange={onChange}
+          submit={writeInfoToDatabase}
+          data={dataUser.current}
+          isSend={send}
+        />
+      );
     default:
       return <h1>Not found</h1>;
   }
