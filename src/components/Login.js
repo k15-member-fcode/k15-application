@@ -53,7 +53,7 @@ const Login = props => {
             <div>
               <div>
                 <p className="p__intruction--sub">
-                  Vui lòng đăng nhập chính xác tài khoản Google của bạn
+                  Vui lòng đăng nhập chính xác tài khoản Google cá nhân
                 </p>
               </div>
               <StyledFirebaseAuth
