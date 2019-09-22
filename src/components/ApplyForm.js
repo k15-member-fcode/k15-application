@@ -95,6 +95,7 @@ const ApplyForm = props => {
         verifyUpdate[studentID] = false;
         dbUser.ref("verify").update(verifyUpdate);
         setSend(true);
+        firebase.auth().signOut();
       }
     });
   };
