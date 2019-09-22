@@ -27,6 +27,7 @@ const HomePage = () => {
             Đăng ký thành viên
           </a>
         </div>
+        <div class='icon-scroll'></div>
       </header>
       <section className="section-about">
         <OverPack style={{ minHeight: "50vh" }}>
