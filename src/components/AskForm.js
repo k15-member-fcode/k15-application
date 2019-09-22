@@ -224,6 +224,8 @@ const AskForm = props => {
               <Select
                 mode="multiple"
                 placeholder="Để trống nếu bạn không tham gia CLB nào khác"
+                allowClear
+                style={{minHeight: "12vh"}}
               >
                 {clubList.map((club, index) => {
                   return (

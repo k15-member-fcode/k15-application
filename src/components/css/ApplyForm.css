@@ -70,3 +70,8 @@ Form, .Login-Button {
 .AskForm textarea {
   resize: none;
 }
+
+.AskForm .ant-select-selection {
+  color: red;
+  min-height: 11.5vh;
+}
