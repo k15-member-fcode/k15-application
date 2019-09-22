@@ -540,12 +540,9 @@ body {
 .row {
   max-width: 114rem;
   margin: 0 auto;
-  display: flex;
 }
 .row [class^="col-"] {
   float: left;
-  flex: 1;
-  display: table-cell;
 }
 .row [class^="col-"]:not(:last-child) {
   margin-right: 6rem;
