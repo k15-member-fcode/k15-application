@@ -27,7 +27,14 @@ const HomePage = () => {
             Đăng ký thành viên
           </a>
         </div>
-        <div class='icon-scroll'></div>
+        <QueueAnim
+          type={["bottom", "top"]}
+          ease={["easeOutQuart", "easeInOutQuart"]}
+          leaveReverse
+          delay={2000}
+        >
+          <div class="icon-scroll" key="a"></div>
+        </QueueAnim>
       </header>
       <section className="section-about">
         <OverPack style={{ minHeight: "50vh" }}>
