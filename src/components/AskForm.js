@@ -1,19 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Select, Icon } from "antd";
 
-const clubToString = clubList => {
-  let result = "";
-  let str = "";
-  Object.keys(clubList).forEach(function(item, key) {
-    key += 1;
-    str += key + ". " + clubList[item] + "; ";
-  });
-  result = str.substring(0, str.length - 2);
-  result += ".";
-  console.log(result);
-  return result;
-};
-
 const processData = submitData => {
   const knowledge = submitData.knowledge;
   const experience = submitData.experience;
@@ -24,9 +11,7 @@ const processData = submitData => {
   const dedication = submitData.dedication;
   const question = submitData.question === undefined ? "" : submitData.question;
   const otherClub =
-    submitData.otherClub === undefined
-      ? ""
-      : clubToString(submitData.otherClub);
+    submitData.otherClub === undefined ? "" : submitData.otherClub;
   return {
     knowledge,
     experience,
@@ -93,7 +78,6 @@ const AskForm = props => {
     props.form.validateFields((err, values) => {
       if (!err) {
         processedData = processData(values);
-        console.log(processedData);
         updateData("ask", processedData);
         nextStep();
       }

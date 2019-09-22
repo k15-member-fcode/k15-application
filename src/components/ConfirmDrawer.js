@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Drawer, Button, Icon, Table } from "antd";
+import { clubToString } from "../Common/clubToString";
 
 const ConfirmDrawer = props => {
   const [visible, setVisible] = useState(true);
@@ -95,7 +96,8 @@ const ConfirmDrawer = props => {
     {
       key: "16",
       question: "Ngoài F-Code, bạn còn tham gia CLB nào khác?",
-      answer: data.ask.otherClub === "" ? "(trống)" : data.ask.otherClub
+      answer:
+        data.ask.otherClub === "" ? "(trống)" : clubToString(data.ask.otherClub)
     },
     {
       key: "17",
@@ -246,8 +248,7 @@ const ConfirmDrawer = props => {
           <Icon type="info-circle" className="icon-primary" />
           &nbsp;
           <span>
-            Bằng việc xác nhận, bạn đảm bảo thông tin bạn cung cấp là chính
-            xác.
+            Bằng việc xác nhận, bạn đảm bảo thông tin bạn cung cấp là chính xác.
           </span>
         </div>
         <div
