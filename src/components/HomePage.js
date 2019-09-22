@@ -33,7 +33,7 @@ const HomePage = () => {
           leaveReverse
           delay={2000}
         >
-          <div class="icon-scroll" key="a"></div>
+          <div className="icon-scroll" key="a"></div>
         </QueueAnim>
       </header>
       <section className="section-about">
