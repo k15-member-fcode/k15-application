@@ -106,14 +106,16 @@ const AskForm = props => {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.knowledge
             })(
               <TextArea
+                maxLength="500"
                 rows={3}
-                placeholder="Ngành này làm những việc gì, có những công việc gì, cần những kiến thức gì,..."
+                placeholder="Ngành này làm những việc gì, có những công việc gì, cần những kiến thức gì,... (tối đa 500 kí tự)"
               />
             )}
           </Form.Item>
@@ -125,14 +127,16 @@ const AskForm = props => {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.experience
             })(
               <TextArea
+                maxLength="500"
                 rows={3}
-                placeholder="Biết được ngôn ngữ lập trình gì, đã từng tham gia những cuộc thi nào, đạt được những giải thưởng gì,…"
+                placeholder="Biết được ngôn ngữ lập trình gì, đã từng tham gia những cuộc thi nào, đạt được những giải thưởng gì,... (tối đa 500 kí tự)"
               />
             )}
           </Form.Item>
@@ -144,33 +148,54 @@ const AskForm = props => {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.reason
-            })(<TextArea rows={3} />)}
+            })(
+              <TextArea
+                maxLength="500"
+                rows={3}
+                placeholder="(tối đa 500 kí tự)"
+              />
+            )}
           </Form.Item>
           <Form.Item label="Ưu điểm của bạn là gì?" colon={false}>
             {getFieldDecorator("pros", {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.pros
-            })(<TextArea rows={3} />)}
+            })(
+              <TextArea
+                maxLength="500"
+                rows={3}
+                placeholder="(tối đa 500 kí tự)"
+              />
+            )}
           </Form.Item>
           <Form.Item label="Khuyết điểm của bạn là gì?" colon={false}>
             {getFieldDecorator("cons", {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.cons
-            })(<TextArea rows={3} />)}
+            })(
+              <TextArea
+                maxLength="500"
+                rows={3}
+                placeholder="(tối đa 500 kí tự)"
+              />
+            )}
           </Form.Item>
           <Form.Item
             label="Điều bạn mong đợi khi tham gia CLB là gì?"
@@ -180,11 +205,18 @@ const AskForm = props => {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.expect
-            })(<TextArea rows={3} />)}
+            })(
+              <TextArea
+                maxLength="500"
+                rows={3}
+                placeholder="(tối đa 500 kí tự)"
+              />
+            )}
           </Form.Item>
           <Form.Item
             label="Nếu trở thành thành viên chính thức, bạn sẽ làm gì để phát triển CLB?"
@@ -194,19 +226,30 @@ const AskForm = props => {
               rules: [
                 {
                   required: true,
-                  message: "Vui lòng trả lời câu hỏi này"
-                }
+                  message: "Vui lòng trả lời câu hỏi này."
+                },
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
               ],
               initialValue: processedData.dedication
-            })(<TextArea rows={3} />)}
+            })(
+              <TextArea
+                maxLength="500"
+                rows={3}
+                placeholder="(tối đa 500 kí tự)"
+              />
+            )}
           </Form.Item>
           <Form.Item label="Bạn có câu hỏi gì gửi đến CLB không?" colon={false}>
             {getFieldDecorator("question", {
+              rules: [
+                { max: 500, message: "Đã đạt số kí tự tối đa (500 kí tự)." }
+              ],
               initialValue: processedData.question
             })(
               <TextArea
+                maxLength="500"
                 rows={3}
-                placeholder="Để trống nếu bạn không có câu hỏi nào"
+                placeholder="Để trống nếu bạn không có câu hỏi nào (tối đa 500 kí tự nếu có)"
               />
             )}
           </Form.Item>
@@ -225,7 +268,7 @@ const AskForm = props => {
                 mode="multiple"
                 placeholder="Để trống nếu bạn không tham gia CLB nào khác"
                 allowClear
-                style={{minHeight: "12vh"}}
+                style={{ minHeight: "12vh" }}
               >
                 {clubList.map((club, index) => {
                   return (
