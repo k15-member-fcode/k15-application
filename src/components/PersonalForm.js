@@ -64,6 +64,7 @@ const PersonalForm = props => {
       if (!err) {
         processedData = processData(values);
         updateData("personal", processedData);
+        isSubmit.current = false;
         nextStep();
       }
     });
@@ -80,15 +81,16 @@ const PersonalForm = props => {
   };
 
   const handleStudentId = (rule, value, callback) => {
-    let timeOut = isSubmit.current ? 0 : 3000;
-    setTimeout(() => {
+    // let timeOut = isSubmit.current ? 0 : 3000;
+    // setTimeout(() => {
+    if (isSubmit.current) {
       let studentID = value;
       if (studentID !== undefined) {
         if (studentID.length !== 0) {
           if (!studentIdValidation.test(studentID)) {
             callback("Mã sinh viên phải có định dạng 15xxxx, với x là số đếm");
           } else if (
-            parseInt(studentID) < 150001 ||
+            parseInt(studentID) % 10000 === 0 ||
             parseInt(studentID) > 152199
           ) {
             callback("Mã sinh viên không đúng");
@@ -96,12 +98,14 @@ const PersonalForm = props => {
         }
       }
       callback();
-    }, timeOut);
+    }
+    // }, timeOut);
   };
 
   const handlePhoneNumber = (rule, value, callback) => {
-    let timeOut = isSubmit.current ? 0 : 3000;
-    setTimeout(() => {
+    // let timeOut = isSubmit.current ? 0 : 3000;
+    // setTimeout(() => {
+    if (isSubmit.current) {
       let phoneNumber = value;
       if (phoneNumber !== undefined) {
         if (!phoneValidation.test(phoneNumber) || phoneNumber.length !== 10) {
@@ -111,12 +115,14 @@ const PersonalForm = props => {
         }
       }
       callback();
-    }, timeOut);
+    }
+    // }, timeOut);
   };
 
   const handleFacebook = (rule, value, callback) => {
-    let timeOut = isSubmit.current ? 0 : 3000;
-    setTimeout(() => {
+    // let timeOut = isSubmit.current ? 0 : 3000;
+    // setTimeout(() => {
+    if (isSubmit.current) {
       let facebook = value;
       if (facebook !== undefined) {
         if (!facebookValidation.test(facebook)) {
@@ -126,9 +132,9 @@ const PersonalForm = props => {
         }
       }
       callback();
-    }, timeOut);
+      // }, timeOut);
+    }
   };
-
   return (
     <div className="PersonalForm">
       {loading ? (
