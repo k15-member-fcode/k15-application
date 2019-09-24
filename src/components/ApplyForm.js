@@ -8,7 +8,6 @@ import ConfirmForm from "./ConfirmForm";
 import ConfirmDrawer from "./ConfirmDrawer";
 import "./css/ApplyForm.css";
 import { firebaseConfig } from "../utils/configFirebase";
-import { clubToString } from "../Common/clubToString";
 
 firebase.initializeApp({
   apiKey: firebaseConfig.apiKey,
@@ -69,10 +68,10 @@ const ApplyForm = props => {
   const updateData = (target, data) => {
     dataUser.current[target] = data;
   };
-
   const writeInfoToDatabase = () => {
     const studentID = dataUser.current.personal.studentID;
-    const validRef = dbUser.ref("verify").child(studentID);
+    const userID = firebase.auth().currentUser.uid;
+    const validRef = dbUser.ref("sID").child(studentID);
     validRef.once("value", snapshot => {
       if (snapshot.val()) {
         setSend(false);
@@ -83,17 +82,15 @@ const ApplyForm = props => {
         const year = date.getFullYear();
         const hours = String(date.getHours()).padStart(2, "0");
         const min = String(date.getMinutes()).padStart(2, "0");
-        date = hours + ":" + min + " - " + day + "/" + mon + "/" + year;
+        date = mon + "/" + day + "/" + year + " - " + hours + ":" + min;
         dataUser.current.timeCreate = date;
-        dataUser.current.ask.otherClub = clubToString(
-          dataUser.current.ask.otherClub
-        );
-        const userRef = dbUser.ref("users");
-        const newRef = userRef.child(studentID);
+        dataUser.current.ask.otherClub = dataUser.current.ask.otherClub;
+        const userRef = dbUser.ref("applications");
+        const newRef = userRef.child(userID);
         newRef.set(dataUser.current);
         const verifyUpdate = {};
         verifyUpdate[studentID] = false;
-        dbUser.ref("verify").update(verifyUpdate);
+        dbUser.ref("sID").update(verifyUpdate);
         setSend(true);
         firebase.auth().signOut();
       }
@@ -102,7 +99,15 @@ const ApplyForm = props => {
 
   switch (step) {
     case 0:
-      return <Login nextStep={nextStep} />;
+      return (
+        <Login
+          onChange={onChange}
+          nextStep={nextStep}
+          data={dataUser.current}
+          dbUser={dbUser}
+          update={updateData}
+        />
+      );
     case 1:
       return (
         <PersonalForm
