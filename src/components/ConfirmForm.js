@@ -45,9 +45,11 @@ const ConfirmForm = props => {
     event.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        processedData = processData(values);
-        updateData("confirm", processedData);
-        nextStep();
+        if (values.isReady === "Đã sẵn sàng" && values.isRead === "Đã đọc") {
+          processedData = processData(values);
+          updateData("confirm", processedData);
+          nextStep();
+        }
       }
     });
   };
@@ -61,6 +63,18 @@ const ConfirmForm = props => {
     });
   };
 
+  const handleReady = (rule, value, callback) => {
+    if (value !== "Đã sẵn sàng") {
+      callback("Bạn chưa sẵn sàng tham gia thử thách của CLB.");
+    }
+    callback();
+  };
+  const handleRead = (rule, value, callback) => {
+    if (value !== "Đã đọc") {
+      callback("Bạn chưa đọc hết nội dung của form này.");
+    }
+    callback();
+  };
   return (
     <div className="ConfirmForm">
       {loading ? (
@@ -78,7 +92,8 @@ const ConfirmForm = props => {
                 {
                   required: true,
                   message: "Vui lòng chọn một mục"
-                }
+                },
+                { validator: handleReady }
               ],
               initialValue: processedData.isReady
             })(
@@ -102,7 +117,8 @@ const ConfirmForm = props => {
                 {
                   required: true,
                   message: "Vui lòng chọn một mục"
-                }
+                },
+                { validator: handleRead }
               ],
               initialValue: processedData.isRead
             })(
