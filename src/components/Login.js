@@ -11,19 +11,39 @@ const Login = props => {
     firebase.auth().onAuthStateChanged(user => {
       setLogin(!!user);
     });
+    if (isLogin) {
+      checkUser();
+    }
   });
 
-  setTimeout(() => {
-    setLoading(false);
-  }, 1500);
-
   const nextStep = props.nextStep;
+  const onChange = props.onChange;
+  const updateData = props.update;
+  const data = props.data;
+  const dbUser = props.dbUser;
+
   const uiConfig = {
     signInFlow: "popup",
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
     callbacks: {
       signInSuccessWithAuthResult: () => true
     }
+  };
+  setTimeout(() => {
+    setLoading(false);
+  }, 1500);
+
+  const checkUser = () => {
+    const userID = firebase.auth().currentUser.uid;
+    const userRef = dbUser.ref("applications").child(userID);
+    userRef.once("value", snapshot => {
+      if (snapshot.val()) {
+        updateData("personal", snapshot.val().personal);
+        updateData("ask", snapshot.val().ask);
+        updateData("confirm", snapshot.val().confirm);
+        onChange(4);
+      }
+    });
   };
   return (
     <div className="Login">
