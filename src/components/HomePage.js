@@ -7,8 +7,7 @@ import Logo from "./img/logo.png";
 import AboutImg1 from "./img/about1.jpg";
 import AboutImg2 from "./img/about2.jpg";
 import AboutImg3 from "./img/about3.jpg";
-import PersonMale from "./img/person1.png";
-import PersonFemale from "./img/person2.png";
+import Profile from "./img/profile.png";
 import BgVideo from "./img/background-question.mp4";
 
 const HomePage = () => {
@@ -45,23 +44,18 @@ const HomePage = () => {
             <div className="row" key="b">
               <div className="col-1-of-2">
                 <h3 className="heading-tertiary u-margin-botton-small">
-                  sub heading 1
+                  Sơ lược về F-Code
                 </h3>
                 <p className="paragraph">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-                  cumque autem officiis distinctio, voluptate qui minima. Magnam
-                  tenetur suscipit eius beatae dolore nihil repudiandae atque
-                  vero, rem, labore ullam ipsa incidunt enim id necessitatibus
-                  at dolor! Incidunt sequi nihil amet.
-                </p>
-                <h3 className="heading-tertiary u-margin-botton-small">
-                  sub heading 1
-                </h3>
-                <p className="paragraph">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elite.
+                  F-Code được thành lập vào năm 2014, là CLB học thuật đầu tiên
+                  tại trường đại học FPT HCM. Với mục tiêu ban đầu là tạo ra một
+                  nơi để các bạn sinh viên ngành kĩ thuật phần mềm, an toàn
+                  thông tin có đam mê về lập trình được thỏa sức trao đổi và học
+                  tập với nhau. Sau hơn 5 năm hoạt động, CLB đã tạo được nhiều
+                  sân chơi cho các bạn sinh viên trường ĐH FPT.
                 </p>
                 <a
-                  href="https://fcodehcm.wordpress.com/"
+                  href="https://fcodehcm.wordpress.com/contact/"
                   className="btn-text"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -107,8 +101,7 @@ const HomePage = () => {
                     Tiêu chí 1
                   </h3>
                   <div className="criteria-box__text">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit,
-                    Neque, quas doloribus corporis debitis soluta atque.
+                    Nhiệt huyết, cống hiến hết mình vì câu lạc bộ.
                   </div>
                 </div>
               </div>
@@ -123,8 +116,8 @@ const HomePage = () => {
                     Tiêu chí 2
                   </h3>
                   <div className="criteria-box__text">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit,
-                    Neque, quas doloribus corporis debitis soluta atque.
+                    Có tinh thần học hỏi, tìm tòi, sẵn sàng chia sẻ kiến thức
+                    với mọi người.
                   </div>
                 </div>
               </div>
@@ -139,8 +132,7 @@ const HomePage = () => {
                     Tiêu chí 3
                   </h3>
                   <div className="criteria-box__text">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit,
-                    Neque, quas doloribus corporis debitis soluta atque.
+                    Tôn trọng các anh chị khóa trên.
                   </div>
                 </div>
               </div>
@@ -155,8 +147,8 @@ const HomePage = () => {
                     Tiêu chí 4
                   </h3>
                   <div className="criteria-box__text">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit,
-                    Neque, quas doloribus corporis debitis soluta atque.
+                    Trách nhiệm, dám thử thách bản thân, kiên trì không dễ dàng
+                    bỏ cuộc.
                   </div>
                 </div>
               </div>
@@ -182,7 +174,7 @@ const HomePage = () => {
                     </h4>
                     <div className="card__details">
                       <ul>
-                        <li>Thời gian</li>
+                        <li>Thời gian: 01/10 – 01/11</li>
                         <li>Số lượng</li>
                         <li>
                           <Icon type="check-circle" className="icon-success" />
@@ -212,12 +204,12 @@ const HomePage = () => {
                     <div className="card__picture card__picture--2">&nbsp;</div>
                     <h4 className="card__heading">
                       <span className="card__heading-span card__heading-span--2">
-                        Giai đoạn P: <br /> Thử thách
+                        Giai đoạn P: <br /> Chưa công bố
                       </span>
                     </h4>
                     <div className="card__details">
                       <ul>
-                        <li>Thời gian</li>
+                        <li>Thời gian: 10/11</li>
                         <li>Số lượng</li>
                         <li>
                           <Icon type="loading" className="icon-primary" />
@@ -231,7 +223,7 @@ const HomePage = () => {
                       <div className="card__instruction-box">
                         <p className="card__instruction-tag">#challengeP</p>
                         <p className="card__instruction-detail">
-                          Hoàn thành giai đoạn F
+                          Sẽ công bố sau <br /> Thời gian công bố: 03/11
                         </p>
                         <a href="/application" className="btn btn--white">
                           Hoàn thành
@@ -252,7 +244,7 @@ const HomePage = () => {
                     </h4>
                     <div className="card__details">
                       <ul>
-                        <li>Thời gian</li>
+                        <li>Thời gian: 04/11 – 01/12</li>
                         <li>Số lượng</li>
                         <li>
                           <Icon type="loading" className="icon-primary" />
@@ -266,7 +258,7 @@ const HomePage = () => {
                       <div className="card__instruction-box">
                         <p className="card__instruction-tag">#challengeT</p>
                         <p className="card__instruction-detail">
-                          Hoàn thành giai đoạn F
+                          Sẽ công bố sau <br /> Thời gian công bố: 03/11
                         </p>
                         <a href="/application" className="btn btn--white">
                           Hoàn thành
@@ -295,64 +287,68 @@ const HomePage = () => {
             <div className="row" key="b">
               <div className="question">
                 <figure className="question__shape">
-                  <img src={PersonMale} alt="" className="question__img" />
-                  <figcaption className="question__caption">
-                    ThinhTPT
-                  </figcaption>
+                  <img src={Profile} alt="" className="question__img" />
+                  <figcaption className="question__caption">Bạn Đức</figcaption>
                 </figure>
                 <div className="question__text">
                   <h3 className="heading-tertiary u-margin-botton-small">
-                    Q: Non quos placeat at maiores voluptatem aliquid
-                    accusantium rerum porro aspernatur, ut ducimus dignissimos
-                    libero?
+                    Q: “Các anh chị có suy nghĩ gì về tương lai của lập trình
+                    viên nữ và cơ hội học tập của các bạn nữ theo học ngành IT
+                    trường mình vậy ạ?”
                   </h3>
                   <p>
-                    A: Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Repellendus quis qui necessitatibus non, vel provident. Non
-                    quos placeat at maiores voluptatem aliquid accusantium rerum
-                    porro aspernatur, ut ducimus dignissimos libero?
+                    A:"Trích từ một chị cựu sinh viên trong CLB khi được nhờ trả
+                    lời câu hỏi. “Đầu tiên là trường mình không có ngành IT, nên
+                    xin được phép trả lời ngành SE. Chị cũng không phải là thầy
+                    bói, hay pháp sư để có thể đánh giá và dự đoán được về tương
+                    lai của mình chứ đừng nói gì là tương lai của lập trình viên
+                    nữ. Câu này để vũ trụ trả lời vậy. Nhìn chung nữ hay nam học
+                    ngành SE, thì đi phỏng vấn, đi làm đều bằng thực lực thôi.
+                    Dù sao công ty trả lương cho bạn cũng không phải vì bạn là
+                    nữ hay ngồi vào vị trí đó cho đẹp phong thuỷ của công ty
+                    phải không? Có thể bạn là nữ thì khi sếp chê bạn hay team
+                    đánh giá bạn sẽ dùng từ nhẹ nhàng hơn tí thôi, mà cũng tuỳ
+                    team nữa nhé. Còn về cơ hội học tập của các bạn nữ theo
+                    ngành SE trường mình. Thì xin đảm bảo với bạn là nam nữ gì
+                    thì cũng học từng đó môn, đóng từng đó tiền học lại. Yên tâm
+                    nha!"
                   </p>
                 </div>
               </div>
               <div className="question">
                 <figure className="question__shape">
-                  <img src={PersonFemale} alt="" className="question__img" />
-                  <figcaption className="question__caption">
-                    ThinhTPT
-                  </figcaption>
+                  <img src={Profile} alt="" className="question__img" />
+                  <figcaption className="question__caption">Bạn Tâm</figcaption>
                 </figure>
                 <div className="question__text">
                   <h3 className="heading-tertiary u-margin-botton-small">
-                    Q: Non quos placeat at maiores voluptatem aliquid
-                    accusantium rerum porro aspernatur, ut ducimus dignissimos
-                    libero?
+                    Q: "Cho em hỏi làm thế nào để học SE từ con số 0 ? Và cách
+                    học tập tốt nhất cho dân SE là gì vậy ạ ?"
                   </h3>
                   <p>
-                    A: Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Repellendus quis qui necessitatibus non, vel provident. Non
-                    quos placeat at maiores voluptatem aliquid accusantium rerum
-                    porro aspernatur, ut ducimus dignissimos libero?
+                    A: "Học gì cũng bắt đầu từ con số 0 mà bạn, quan trọng là
+                    mình cố gắng như thế nào thôi. Theo mình thì quan trọng nhất
+                    vẫn là nắm vững kiến thức học trên trường. Bên cạnh đó bạn
+                    có thể tự học qua mạng, bạn bè, tiền bối."
                   </p>
                 </div>
               </div>
               <div className="question">
                 <figure className="question__shape">
-                  <img src={PersonMale} alt="" className="question__img" />
+                  <img src={Profile} alt="" className="question__img" />
                   <figcaption className="question__caption">
-                    ThinhTPT
+                    Bạn Ngọc
                   </figcaption>
                 </figure>
                 <div className="question__text">
                   <h3 className="heading-tertiary u-margin-botton-small">
-                    Q: Non quos placeat at maiores voluptatem aliquid
-                    accusantium rerum porro aspernatur, ut ducimus dignissimos
-                    libero?
+                    Q: "Cho em hỏi là học SE thì mình cần trang bị những ngôn
+                    ngữ lập trình gì với kiến thức nền tảng như thế nào ạ"
                   </h3>
                   <p>
-                    A: Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Repellendus quis qui necessitatibus non, vel provident. Non
-                    quos placeat at maiores voluptatem aliquid accusantium rerum
-                    porro aspernatur, ut ducimus dignissimos libero?
+                    A: "Quan trọng không phải là ngôn ngữ mà là tư duy lập trình
+                    nha bạn. Muốn có tư duy lập trình thì ngôn ngữ gì cũng
+                    được."
                   </p>
                 </div>
               </div>

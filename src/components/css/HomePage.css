@@ -125,6 +125,7 @@ body {
 
 .paragraph {
   font-size: 1.6rem;
+  text-align: justify;
 }
 .paragraph:not(:last-child) {
   margin-bottom: 3rem;
@@ -300,6 +301,7 @@ body {
   border-radius: 5rem;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
   transition: all 0.2s;
+  min-height: 270px;
 }
 .criteria-box__icon {
   font-size: 6rem;
@@ -505,6 +507,9 @@ body {
 .question:hover .question__img {
   filter: blur(0.5rem) brightness(70%);
   transform: scale(1.05);
+}
+.question__text p {
+  text-align: justify;
 }
 
 .bg-video {
