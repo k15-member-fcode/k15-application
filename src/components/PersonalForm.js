@@ -26,7 +26,6 @@ const processData = submitData => {
     facebook
   };
 };
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -37,10 +36,6 @@ const formItemLayout = {
     sm: { span: 12 }
   }
 };
-
-const majorList = ["SE", "IA", "IoT", "AI"];
-const genderList = ["Nam", "Nữ"];
-
 const PersonalForm = props => {
   const isSubmit = useRef(false);
   const [loading, setLoading] = useState(true);
@@ -81,8 +76,6 @@ const PersonalForm = props => {
   };
 
   const handleStudentId = (rule, value, callback) => {
-    // let timeOut = isSubmit.current ? 0 : 3000;
-    // setTimeout(() => {
     if (isSubmit.current) {
       let studentID = value;
       if (studentID !== undefined) {
@@ -99,12 +92,9 @@ const PersonalForm = props => {
       }
       callback();
     }
-    // }, timeOut);
   };
 
   const handlePhoneNumber = (rule, value, callback) => {
-    // let timeOut = isSubmit.current ? 0 : 3000;
-    // setTimeout(() => {
     if (isSubmit.current) {
       let phoneNumber = value;
       if (phoneNumber !== undefined) {
@@ -116,12 +106,9 @@ const PersonalForm = props => {
       }
       callback();
     }
-    // }, timeOut);
   };
 
   const handleFacebook = (rule, value, callback) => {
-    // let timeOut = isSubmit.current ? 0 : 3000;
-    // setTimeout(() => {
     if (isSubmit.current) {
       let facebook = value;
       if (facebook !== undefined) {
@@ -132,7 +119,6 @@ const PersonalForm = props => {
         }
       }
       callback();
-      // }, timeOut);
     }
   };
   return (

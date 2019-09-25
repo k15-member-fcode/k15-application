@@ -19,7 +19,6 @@ const Login = props => {
   const nextStep = props.nextStep;
   const onChange = props.onChange;
   const updateData = props.update;
-  const data = props.data;
   const dbUser = props.dbUser;
 
   const uiConfig = {
