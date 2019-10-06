@@ -1,4 +1,3 @@
-
 export const clubToString = clubList => {
     let result = "";
     let str = "";
