@@ -7,19 +7,21 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 const Login = props => {
   const [isLogin, setLogin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [dbUser, setDbUser] = useState(false);
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       setLogin(!!user);
     });
     if (isLogin) {
-      checkUser();
+      checkUserOnFirebase();
     }
+    setDbUser(props.dbUser);
   });
 
   const nextStep = props.nextStep;
   const onChange = props.onChange;
   const updateData = props.update;
-  const dbUser = props.dbUser;
 
   const uiConfig = {
     signInFlow: "popup",
@@ -32,7 +34,7 @@ const Login = props => {
     setLoading(false);
   }, 1500);
 
-  const checkUser = () => {
+  const checkUserOnFirebase = () => {
     const userID = firebase.auth().currentUser.uid;
     const userRef = dbUser.ref("applications").child(userID);
     userRef.once("value", snapshot => {
@@ -40,20 +42,24 @@ const Login = props => {
         updateData("personal", snapshot.val().personal);
         updateData("ask", snapshot.val().ask);
         updateData("confirm", snapshot.val().confirm);
-        onChange(4);
+        if (snapshot.val().confirm.isVerify) {
+          onChange(5);
+        } else {
+          onChange(4);
+        }
       }
     });
   };
   return (
     <div className="Login">
       {loading ? (
-        <div>
+        <div className="div-center">
           <Icon type="loading" className="icon-primary icon-center" />
         </div>
       ) : (
         <div>
           {isLogin ? (
-            <div>
+            <div className="div-center">
               <Icon className="icon-success icon-center" type="check-circle" />
               <h2 className="heading-center">Đăng nhập thành công </h2>
               <div className="Login-Button">
@@ -69,12 +75,10 @@ const Login = props => {
               </div>
             </div>
           ) : (
-            <div>
-              <div>
-                <p className="p__intruction--sub">
-                  Vui lòng đăng nhập chính xác tài khoản Google cá nhân
-                </p>
-              </div>
+            <div className="div-center">
+              <p className="p__intruction--sub">
+                Vui lòng đăng nhập chính xác tài khoản Google cá nhân
+              </p>
               <StyledFirebaseAuth
                 uiConfig={uiConfig}
                 firebaseAuth={firebase.auth()}

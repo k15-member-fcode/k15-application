@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Steps, Divider } from "antd";
-import "./css/ApplicationPage.css";
+import "../resource/css/ApplicationPage.css";
 import ApplyForm from "./ApplyForm";
-import Footer from "./Footer";
-const ApplicationPage = () => {
+import Footer from "./Common/Footer";
+
+const ApplicationPage = props => {
   const [step, setStep] = useState(0);
   const { Step } = Steps;
 

@@ -6,7 +6,8 @@ import PersonalForm from "./PersonalForm";
 import AskForm from "./AskForm";
 import ConfirmForm from "./ConfirmForm";
 import ConfirmDrawer from "./ConfirmDrawer";
-import "./css/ApplyForm.css";
+import Congratulation from "./Congratulation";
+import * as moment from "moment";
 import { firebaseConfig } from "../utils/configFirebase";
 
 firebase.initializeApp({
@@ -17,6 +18,14 @@ firebase.initializeApp({
   storageBucket: firebaseConfig.storageBucket,
   messagingSenderId: firebaseConfig.messagingSenderId
 });
+// firebase.initializeApp({
+//   apiKey: process.env.REACT_APP_API_KEY,
+//   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+//   databaseURL: process.env.REACT_APP_DATABASE_URL,
+//   projectId: process.env.REACT_APP_PROJECT_ID,
+//   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+//   messagingSenderId: process.env.REACT_APP_MESSASING_SENDER_ID
+// });
 
 const dbUser = firebase.database();
 
@@ -52,9 +61,11 @@ const ApplyForm = props => {
     confirm: {
       isReady: "Chưa sẵn sàng",
       isRead: "Chưa đọc",
-      isVerify: false
+      isVerify: false,
+      tryMail: 5
     },
-    timeCreate: undefined
+    timeCreate: undefined,
+    uID: undefined
   });
   const onChange = props.setStep;
   const nextStep = () => {
@@ -66,6 +77,11 @@ const ApplyForm = props => {
   };
 
   const updateData = (target, data) => {
+    Object.keys(data).map(
+      key =>
+        (data[key] =
+          typeof data[key] === "string" ? data[key].trim() : data[key])
+    );
     dataUser.current[target] = data;
   };
   const writeInfoToDatabase = () => {
@@ -76,15 +92,10 @@ const ApplyForm = props => {
       if (snapshot.val()) {
         setSend(false);
       } else {
-        let date = new Date();
-        const day = String(date.getDate()).padStart(2, "0");
-        const mon = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, "0");
-        const min = String(date.getMinutes()).padStart(2, "0");
-        date = mon + "/" + day + "/" + year + " - " + hours + ":" + min;
+        const date = moment().format("MM/DD/YYYY - HH:mm");
         dataUser.current.timeCreate = date;
-        dataUser.current.ask.otherClub = dataUser.current.ask.otherClub;
+        dataUser.current.confirm.tryMail = dataUser.current.confirm.tryMail - 1;
+        dataUser.current.uID = firebase.auth().currentUser.uid;
         const userRef = dbUser.ref("applications");
         const newRef = userRef.child(userID);
         newRef.set(dataUser.current);
@@ -144,6 +155,8 @@ const ApplyForm = props => {
           isSend={send}
         />
       );
+    case 5:
+      return <Congratulation name={dataUser.current.personal.fullname} />;
     default:
       return <h1>Not found</h1>;
   }

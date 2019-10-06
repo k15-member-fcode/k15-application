@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
+import * as moment from "moment";
 import { Drawer, Button, Icon, Table } from "antd";
-import { clubToString } from "../Common/clubToString";
+import firebase from "firebase/app";
+import "firebase/functions";
+import { clubToString } from "../utils/utils";
+import "../resource/css/table.css";
 
 const ConfirmDrawer = props => {
   const [visible, setVisible] = useState(true);
   const [confirm, setConfirm] = useState(false);
   const [send, setSend] = useState(false);
+  const [isError, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -149,8 +154,28 @@ const ConfirmDrawer = props => {
   };
 
   const confirmData = () => {
-    setConfirm(true);
-    submitData();
+    if (!isError && data.confirm.tryMail > 0) {
+      let emailMessage = firebase.functions().httpsCallable("emailMessage");
+      emailMessage({
+        info: {
+          name: data.personal.fullname,
+          email: data.personal.email,
+          phone: data.personal.phone,
+          facebook: data.personal.facebook,
+          sid: data.personal.studentID,
+          uid: firebase.auth().currentUser.uid,
+          time: moment().format("MMDDYYYYhhmmssa")
+        }
+      })
+        .then(function(result) {
+          console.log(data.confirm);
+        })
+        .catch(function(error) {
+          setError(true);
+        });
+      setConfirm(true);
+      submitData();
+    }
     closeConfirm();
     setLoading(true);
     setTimeout(() => {
@@ -161,7 +186,7 @@ const ConfirmDrawer = props => {
   return (
     <div className="ConfirmDrawer">
       {visible || loading ? (
-        <div>
+        <div className="div-center">
           <Icon type="loading" className="icon-primary icon-center" />
         </div>
       ) : (
@@ -170,19 +195,57 @@ const ConfirmDrawer = props => {
             <div>
               {send ? (
                 <div>
-                  <Icon
-                    type="check-circle"
-                    className="icon-success icon-center"
-                  />
-                  <h2 className="heading-center">Đăng ký thành công</h2>
+                  {!isError ? (
+                    <div className="div-center">
+                      <Icon
+                        type="check-circle"
+                        className="icon-success icon-center"
+                      />
+                      <h2 className="heading-center">
+                        Gửi thông tin thành công
+                      </h2>
+                      <p>
+                        Vui lòng kiểm tra email xác nhận thông tin của bạn từ
+                        câu lạc bộ.
+                      </p>
+                      <Button type="link">
+                        <a
+                          href="https://mail.google.com/mail/u/0/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Mở Gmail
+                        </a>
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="div-center">
+                      <Icon
+                        type="close-circle"
+                        className="icon-error icon-center"
+                      />
+                      <h2 className="heading-center">Gửi thông tin thất bại</h2>
+                      <div>
+                        <Icon type="warning" className="icon-warning" />
+                        &nbsp;
+                        <span>
+                          Nguyên nhân: lỗi trong quá trình gửi email, vui lòng
+                          thử lại sau vài phút.
+                        </span>
+                      </div>
+                      <Button onClick={showConfirm} type="primary">
+                        Thử lại
+                      </Button>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div>
+                <div className="div-center">
                   <Icon
                     type="close-circle"
                     className="icon-error icon-center"
                   />
-                  <h2 className="heading-center">Đăng ký thất bại</h2>
+                  <h2 className="heading-center">Gửi thông tin thất bại</h2>
                   <div>
                     <Icon type="warning" className="icon-warning" />
                     &nbsp;
@@ -198,7 +261,7 @@ const ConfirmDrawer = props => {
               )}
             </div>
           ) : (
-            <div>
+            <div className="div-center">
               <Icon type="warning" className="icon-warning icon-center" />
               <h2 className="heading-center">
                 Vui lòng xác nhận thông tin của bạn
@@ -234,9 +297,10 @@ const ConfirmDrawer = props => {
           columns={columns}
           dataSource={dataSource}
           pagination={false}
-          scroll={{ y: "60vh" }}
+          scroll={{ y: "55vh" }}
           size="middle"
         />
+        <div className="instruction-container">
         <div className="margin-top-sm">
           <Icon type="warning" className="icon-warning" />
           &nbsp;
@@ -248,8 +312,15 @@ const ConfirmDrawer = props => {
           <Icon type="info-circle" className="icon-primary" />
           &nbsp;
           <span>
-            Bằng việc xác nhận, bạn đảm bảo thông tin bạn cung cấp là chính xác.
+            Số lần gửi lại mail xác nhận còn:{" "}
+            <span style={{ color: "red" }}>
+              {data.confirm.tryMail > 0
+                ? data.confirm.tryMail
+                : "Đạt giới hạn, vui lòng liên hệ clb để giải quyết"}
+            </span>
+            .
           </span>
+        </div>
         </div>
         <div
           style={{
@@ -266,7 +337,11 @@ const ConfirmDrawer = props => {
           <Button onClick={backToPrev} style={{ marginRight: 8 }}>
             Chỉnh sửa
           </Button>
-          <Button onClick={confirmData} type="primary">
+          <Button
+            onClick={confirmData}
+            type="primary"
+            disabled={data.confirm.tryMail > 0 ? false : true}
+          >
             Xác nhận
           </Button>
         </div>

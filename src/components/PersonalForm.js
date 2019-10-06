@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Form, Radio, Input, Button, Icon, Tooltip } from "antd";
 import firebase from "firebase/app";
 import {
@@ -7,15 +7,17 @@ import {
   phoneValidation,
   facebookValidation
 } from "../utils/config";
+import { dataForm } from "../utils/dataForm";
+import { MAJOR_LIST, GENDER_LIST } from "../utils/constant";
 
 const processData = submitData => {
-  const fullname = submitData.fullname;
+  const fullname = submitData.fullname.toUpperCase();
   const studentID = submitData.studentID;
   const major = submitData.major;
   const gender = submitData.gender;
   const email = firebase.auth().currentUser.email;
   const phone = submitData.phoneNumber;
-  const facebook = submitData.facebook;
+  const facebook = submitData.facebook.toLowerCase();
   return {
     fullname,
     studentID,
@@ -26,6 +28,7 @@ const processData = submitData => {
     facebook
   };
 };
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -36,13 +39,9 @@ const formItemLayout = {
     sm: { span: 12 }
   }
 };
-const PersonalForm = props => {
-  const isSubmit = useRef(false);
-  const [loading, setLoading] = useState(true);
 
-  setTimeout(() => {
-    setLoading(false);
-  }, 500);
+const PersonalForm = props => {
+  const submitStatus = useRef(false);
 
   const nextStep = props.nextStep;
   const prevStep = props.prevStep;
@@ -54,12 +53,12 @@ const PersonalForm = props => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    isSubmit.current = true;
+    submitStatus.current = true;
     props.form.validateFields((err, values) => {
       if (!err) {
         processedData = processData(values);
         updateData("personal", processedData);
-        isSubmit.current = false;
+        submitStatus.current = false;
         nextStep();
       }
     });
@@ -67,204 +66,193 @@ const PersonalForm = props => {
 
   const handlePrev = event => {
     event.preventDefault();
-    isSubmit.current = true;
+    submitStatus.current = true;
     props.form.validateFields((err, values) => {
+      err = null;
       processedData = processData(values);
       updateData("personal", processedData);
+      submitStatus.current = false;
       prevStep();
     });
   };
 
   const handleStudentId = (rule, value, callback) => {
-    if (isSubmit.current) {
-      let studentID = value;
-      if (studentID !== undefined) {
-        if (studentID.length !== 0) {
+    if (value !== undefined) {
+      const studentID = value.trim();
+      if (studentID.length !== 0) {
+        if (submitStatus.current) {
           if (!studentIdValidation.test(studentID)) {
-            callback("Mã sinh viên phải có định dạng 15xxxx, với x là số đếm");
+            callback(dataForm.personal.studentID.message.validation[0]);
           } else if (
             parseInt(studentID) % 10000 === 0 ||
             parseInt(studentID) > 152199
           ) {
-            callback("Mã sinh viên không đúng");
+            callback(dataForm.personal.studentID.message.validation[1]);
+          } else {
+            callback();
           }
         }
+      } else {
+        callback(dataForm.personal.studentID.message.required);
       }
-      callback();
+    } else {
+      callback(dataForm.personal.studentID.message.required);
     }
   };
 
   const handlePhoneNumber = (rule, value, callback) => {
-    if (isSubmit.current) {
-      let phoneNumber = value;
-      if (phoneNumber !== undefined) {
-        if (!phoneValidation.test(phoneNumber) || phoneNumber.length !== 10) {
-          phoneNumber.length !== 0
-            ? callback("Số điện thoại bạn nhập không đúng")
-            : callback();
+    if (value !== undefined) {
+      let phoneNumber = value.trim();
+      if (phoneNumber.length !== 0) {
+        if (submitStatus.current) {
+          if (!phoneValidation.test(phoneNumber) || phoneNumber.length !== 10) {
+            callback(dataForm.personal.phoneNumber.message.validation);
+          } else {
+            callback();
+          }
         }
+      } else {
+        callback(dataForm.personal.phoneNumber.message.required);
       }
-      callback();
+    } else {
+      callback(dataForm.personal.phoneNumber.message.required);
     }
   };
 
   const handleFacebook = (rule, value, callback) => {
-    if (isSubmit.current) {
-      let facebook = value;
-      if (facebook !== undefined) {
-        if (!facebookValidation.test(facebook)) {
-          facebook.length !== 0
-            ? callback("Link Facebook bạn nhập không đúng")
-            : callback();
+    if (value !== undefined) {
+      let facebook = value.trim();
+      if (facebook.length !== 0) {
+        if (submitStatus.current) {
+          if (!facebookValidation.test(facebook) || facebook.endsWith("facebook.com/")) {
+            callback(dataForm.personal.facebook.message.validation);
+          } else {
+            callback();
+          }
         }
+      } else {
+        callback(dataForm.personal.phoneNumber.message.required);
       }
-      callback();
+    } else {
+      callback(dataForm.personal.phoneNumber.message.required);
     }
   };
   return (
     <div className="PersonalForm">
-      {loading ? (
-        <div>
-          <Icon type="loading" className="icon-primary icon-center" />
-        </div>
-      ) : (
-        <Form {...formItemLayout} onSubmit={handleSubmit} className="Form">
-          <Form.Item label="Họ và tên">
-            {getFieldDecorator("fullname", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng nhập họ tên của bạn"
-                },
-                {
-                  pattern: nameValidation,
-                  message: "Họ tên bạn nhập chứ ký tự không hợp lệ"
-                }
-              ],
-              initialValue: processedData.fullname
-            })(
-              <Input
-                size="large"
-                placeholder="Họ và tên của bạn"
-                autoComplete="off"
-              />
-            )}
-          </Form.Item>
-          <Form.Item label="Mã sinh viên">
-            {getFieldDecorator("studentID", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng nhập mã sinh viên của bạn"
-                },
-                {
-                  validator: handleStudentId
-                }
-              ],
-              initialValue: processedData.studentID
-            })(
-              <Input
-                prefix="SE"
-                size="large"
-                placeholder="15xxxx"
-                autoComplete="off"
-              />
-            )}
-          </Form.Item>
-          <Form.Item label="Chuyên ngành">
-            {getFieldDecorator("major", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng chọn chuyên ngành của bạn"
-                }
-              ],
-              initialValue: processedData.major
-            })(
-              <Radio.Group buttonStyle="outline">
-                {majorList.map((major, index) => {
-                  return (
-                    <Radio.Button key={index} value={major}>
-                      {major}
+      <Form {...formItemLayout} onSubmit={handleSubmit} className="Form">
+        <Form.Item label="Họ và tên">
+          {getFieldDecorator("fullname", {
+            rules: [
+              {
+                required: true,
+                message: dataForm.personal.fullname.message.required
+              },
+              {
+                pattern: nameValidation,
+                message: dataForm.personal.fullname.message.validation
+              }
+            ],
+            initialValue: processedData.fullname
+          })(
+            <Input
+              size="large"
+              placeholder="Họ và tên của bạn"
+              autoComplete="off"
+            />
+          )}
+        </Form.Item>
+        <Form.Item label="Mã sinh viên">
+          {getFieldDecorator("studentID", {
+            rules: [{required: true, validator: handleStudentId }],
+            initialValue: processedData.studentID
+          })(
+            <Input
+              prefix="SE"
+              size="large"
+              placeholder="15xxxx"
+              autoComplete="off"
+            />
+          )}
+        </Form.Item>
+        <Form.Item label="Chuyên ngành">
+          {getFieldDecorator("major", {
+            rules: [
+              {
+                required: true,
+                message: dataForm.personal.major.message.validation
+              }
+            ],
+            initialValue: processedData.major
+          })(
+            <Radio.Group buttonStyle="outline">
+              {MAJOR_LIST.map((major, index) => {
+                return (
+                  <Radio.Button key={index} value={major}>
+                    {major}
+                  </Radio.Button>
+                );
+              })}
+            </Radio.Group>
+          )}
+        </Form.Item>
+        <Form.Item label="Giới tính">
+          {getFieldDecorator("gender", {
+            rules: [
+              {
+                required: true,
+                message: dataForm.personal.gender.message.validation
+              }
+            ],
+            initialValue: processedData.gender
+          })(
+            <Radio.Group buttonStyle="outline">
+              {GENDER_LIST.map((gender, index) => {
+                return (
+                  <Tooltip key={index} placement="bottom" title={gender}>
+                    <Radio.Button key={index} value={gender}>
+                      {gender === "Nam" ? (
+                        <Icon type="man" />
+                      ) : (
+                        <Icon type="woman" />
+                      )}
                     </Radio.Button>
-                  );
-                })}
-              </Radio.Group>
-            )}
-          </Form.Item>
-          <Form.Item label="Giới tính">
-            {getFieldDecorator("gender", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng chọn giới tính của bạn"
-                }
-              ],
-              initialValue: processedData.gender
-            })(
-              <Radio.Group buttonStyle="outline">
-                {genderList.map((gender, index) => {
-                  return (
-                    <Tooltip key={index} placement="bottom" title={gender}>
-                      <Radio.Button key={index} value={gender}>
-                        {gender === "Nam" ? (
-                          <Icon type="man" />
-                        ) : (
-                          <Icon type="woman" />
-                        )}
-                      </Radio.Button>
-                    </Tooltip>
-                  );
-                })}
-              </Radio.Group>
-            )}
-          </Form.Item>
-          <Form.Item label="Số điện thoại">
-            {getFieldDecorator("phoneNumber", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng nhập số điện thoại của bạn"
-                },
-                {
-                  validator: handlePhoneNumber
-                }
-              ],
-              initialValue: processedData.phone
-            })(
-              <Input size="large" placeholder="0xxxxxxxxx" autoComplete="off" />
-            )}
-          </Form.Item>
-          <Form.Item label="Link Facebook">
-            {getFieldDecorator("facebook", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng nhập địa chỉ Facebook của bạn"
-                },
-                { validator: handleFacebook }
-              ],
-              initialValue: processedData.facebook
-            })(
-              <Input
-                size="large"
-                placeholder="https://facebook.com/xxxxx"
-                autoComplete="off"
-              />
-            )}
-          </Form.Item>
-          <Form.Item>
-            <div className="btn-container">
-              <Button type="primary" htmlType="submit" className="btn-right">
-                Tiếp tục
-              </Button>
-              <Button onClick={handlePrev} className="btn-right">
-                Trở về
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      )}
+                  </Tooltip>
+                );
+              })}
+            </Radio.Group>
+          )}
+        </Form.Item>
+        <Form.Item label="Số điện thoại">
+          {getFieldDecorator("phoneNumber", {
+            rules: [{required: true, validator: handlePhoneNumber }],
+            initialValue: processedData.phone
+          })(
+            <Input size="large" placeholder="0xxxxxxxxx" autoComplete="off" />
+          )}
+        </Form.Item>
+        <Form.Item label="Link Facebook">
+          {getFieldDecorator("facebook", {
+            rules: [{required: true, validator: handleFacebook }],
+            initialValue: processedData.facebook
+          })(
+            <Input
+              size="large"
+              placeholder="https://facebook.com/xxxxx"
+              autoComplete="off"
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
+          <div className="btn-container">
+            <Button type="primary" htmlType="submit" className="btn-right">
+              Tiếp tục
+            </Button>
+            <Button onClick={handlePrev} className="btn-right">
+              Trở về
+            </Button>
+          </div>
+        </Form.Item>
+      </Form>
     </div>
   );
 };
