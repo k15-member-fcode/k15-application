@@ -1,0 +1,30 @@
+.App {
+  overflow-x: hidden;
+}
+
+.rt-tr {
+  /* background-color: #CCFFFF; */
+}
+
+.rt-tr-group {
+  cursor: pointer;
+}
+
+.rt-tr-group:hover .rt-tr {
+  color: #0000FF;
+}
+
+.ant-checkbox-wrapper {
+  text-align: center;
+  width: 50%;
+  margin-left: 25%;
+}
+
+.ant-btn {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.rthfc-th-fixed-left {
+  left: 0px!important;
+}

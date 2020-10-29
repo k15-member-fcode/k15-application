@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import HomePage from "./components/HomePage/HomePage";
+import ApplicationPage from "./components/ApplicationPage";
+import Verify from "./components/Verify";
+import Admin from "./components/Admin";
+import CheckingOffline from "./components/CheckingOffline";
+import InterviewAdmin from "./components/InterviewAdmin";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route exact path="/application" component={ApplicationPage} />
+          <Route path="/verify" component={Verify} />
+          <Route exact path="/admin/offline" component={CheckingOffline} />
+          <Route exact path="/admin/score-interview" component={InterviewAdmin} />
+          <Route path="/admin" component={Admin} />
+          <Route path="/" component={HomePage} />
+        </Switch>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

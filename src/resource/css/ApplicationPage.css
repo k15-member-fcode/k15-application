@@ -1,0 +1,80 @@
+.ApplicationPage {
+  width: 90%;
+  padding: 10px;
+  padding-top: 15px;
+  margin: auto 5%;
+  min-height: 85vh;
+}
+
+.heading__page {
+  text-align: center;
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-block;
+  letter-spacing: 1.5rem;
+  background-image: linear-gradient(to right, #8e9efc, #1c3eff);
+  color: transparent;
+  -webkit-background-clip: text;
+}
+
+.p__intruction--main {
+  font-size: 120%;
+  margin-bottom: 25px;
+}
+
+.p__intruction--sub {
+}
+
+.notiError {
+  padding-top: 15%;
+  margin-bottom: 20px;
+}
+
+.footer {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(142, 158, 252, 0.9),
+    rgba(28, 62, 255, 0.9)
+  );
+  padding: 10px;
+  min-height: 15vh;
+  text-align: center;
+}
+.footer a {
+  color: #000;
+}
+
+@media screen and (max-width: 768px){
+  .heading__page {
+    letter-spacing: 1rem;
+    font-size: 3rem;
+  }
+  .p__intruction--main {
+    font-size: 100%;
+  }
+  .ApplicationPage {
+    padding: 5px;
+    margin: 0;
+  }
+  .Login, .PersonalForm, .AskForm, .ConfirmForm {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+  .ant-form-item {
+    width: calc(100vw - 8px);
+  }
+  .instruction-container {
+    min-height: 35vh;
+  }
+  .margin-top-sm {
+    margin-top: 5px;
+  }
+  .margin-bottom-sm {
+    margin-bottom: 5px;
+  }
+}
