@@ -1,0 +1,43 @@
+textarea {
+  resize: none;
+}
+
+.btn-container {
+  width: 100% !important;
+}
+
+.btn-container button {
+  display: block;
+  margin: 0 auto;
+  width: 60px;
+}
+
+.InterviewScore {
+  width: calc(55vw - 50px) !important;
+}
+
+.ScoreForm {
+  margin-top: 20px;
+}
+
+.ScoreForm .ant-form-item:last-child .ant-form-item-control-wrapper {
+  width: 125% !important;
+}
+
+.InterviewScoreTable {
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+.InterviewScoreTable .ant-table-body {
+  margin: 0 !important;
+}
+
+.ant-table-row:last-child {
+  text-align: center;
+}
+
+.table-avg-score {
+  font-weight: bold;
+}

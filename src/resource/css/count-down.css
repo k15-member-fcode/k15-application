@@ -1,0 +1,88 @@
+.countdown-drawer .ant-drawer-body {
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+.countdown-drawer .ant-drawer-wrapper-body {
+  overflow: hidden !important;
+}
+
+.countdown-drawer .anticon-close {
+  color: #fff;
+  font-size: 150%;
+}
+.countdown-container {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+}
+
+.countdown-title {
+  font-family: "Saira Stencil One", cursive;
+  font-size: 3rem;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+}
+
+.countdown-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  transform: scale(1.5);
+  margin: 30px auto;
+}
+
+.countdown-item {
+  color: #b33838;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  line-height: 30px;
+  margin: 10px;
+  padding-top: 10px;
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.countdown-item span {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.countdown-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+}
+
+.countdown-svg path {
+  stroke: #ddd;
+}
+
+.btn--countdown:hover {
+  background-color: #b33838;
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  .countdown-wrapper {
+    transform: scale(1);
+  }
+}

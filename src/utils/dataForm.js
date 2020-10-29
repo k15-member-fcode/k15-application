@@ -3,7 +3,7 @@ export const dataForm = {
     fullname: {
       label: "Họ và tên",
       message: {
-        required: "Vui lòng nhập họ tên của ban.",
+        required: "Vui lòng nhập họ tên của bạn.",
         validation: "Họ tên của bạn chứa ký tự không hợp lệ."
       },
       placeholder: "Họ và tên của bạn"
@@ -11,7 +11,7 @@ export const dataForm = {
     studentID: {
       label: "Mã sinh viên",
       message: {
-        required: "Vui lòng nhập mã sinh viên của ban.",
+        required: "Vui lòng nhập mã sinh viên của bạn.",
         validation: [
           "Mã sinh viên phải có định dạng 15xxxx, với x là số đếm.",
           "Mã sinh viên không đúng."
@@ -22,19 +22,19 @@ export const dataForm = {
     major: {
       label: "Chuyên ngành",
       message: {
-        required: "Vui lòng chọn chuyên ngành của ban."
+        required: "Vui lòng chọn chuyên ngành của bạn."
       }
     },
     gender: {
       label: "Giới tính",
       message: {
-        required: "Vui lòng chọn giới tính của ban."
+        required: "Vui lòng chọn giới tính của bạn."
       }
     },
     phoneNumber: {
       label: "Số diện thoại",
       message: {
-        required: "Vui lòng nhập số điện thoại của ban.",
+        required: "Vui lòng nhập số điện thoại của bạn.",
         validation: "Số điện thoại bạn nhập không đúng."
       },
       placeholder: "0xxxxxxxxx"
@@ -42,7 +42,7 @@ export const dataForm = {
     facebook: {
       label: "Địa chỉ Facebook",
       message: {
-        required: "Vui lòng nhập địa chỉ Facebook của ban.",
+        required: "Vui lòng nhập địa chỉ Facebook của bạn.",
         validation: "Địa chỉ Facebook bạn nhập không đúng."
       },
       placeholder: "https://facebook.com/xxxxx"

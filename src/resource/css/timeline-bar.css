@@ -1,0 +1,245 @@
+.timeline-drawer .ant-drawer-body {
+  padding: 0 !important;
+}
+
+.timeline-drawer .anticon-close {
+  color: #fff;
+  font-size: 150%;
+}
+
+.btn--timeline {
+  background-color: crimson;
+  color: #fff;
+}
+
+.btn--timeline::after {
+  background-color: crimson;
+}
+
+.TimelineBar {
+  background-color: black;
+  font-family: "Comfortaa", cursive;
+}
+
+.timeline-title {
+  padding: 20px;
+  padding-top: 50px;
+  display: block;
+  font-size: 4rem;
+  text-align: center !important;
+  text-transform: uppercase;
+  font-family: "Sedgwick Ave Display", cursive;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 20px;
+  word-spacing: 25px;
+}
+
+.vertical-timeline-element-date {
+  color: white;
+  font-size: 2rem !important;
+  top: -6px !important;
+  opacity: 1 !important;
+  font-weight: bolder !important;
+  font-family: "Saira Stencil One", cursive;
+  background-color: red;
+  text-align: center !important;
+}
+
+.vertical-timeline-element-date {
+  background: #eee;
+  color: #999;
+  height: 64px;
+  padding: 0 20px 0 32px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+  cursor: pointer;
+  width: 30% !important;
+  word-wrap: break-word;
+  transition: all .5s;
+}
+
+.vertical-timeline-element:nth-child(even) .vertical-timeline-element-date {
+  border-radius: 0 3px 3px 0;
+}
+
+.vertical-timeline-element:nth-child(odd) .vertical-timeline-element-date {
+  border-radius: 3px 0 0 3px;
+}
+
+.vertical-timeline-element-date::before {
+  background: black;
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: "";
+  height: 6px;
+  width: 6px;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.vertical-timeline-element:nth-child(even)
+  .vertical-timeline-element-date::before {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.vertical-timeline-element:nth-child(odd)
+  .vertical-timeline-element-date::before {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.vertical-timeline-element-date::after {
+  background: black;
+  content: "";
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.vertical-timeline-element:nth-child(even)
+  .vertical-timeline-element-date::after {
+  border-bottom: 32px solid transparent;
+  border-right: 10px solid #eee;
+  border-top: 32px solid transparent;
+  left: 0;
+}
+
+.vertical-timeline-element:nth-child(odd)
+  .vertical-timeline-element-date::after {
+  border-bottom: 32px solid transparent;
+  border-left: 10px solid #eee;
+  border-top: 32px solid transparent;
+  right: 0;
+}
+
+.vertical-timeline-element-date:hover {
+  background-color: crimson;
+  color: white;
+}
+
+.vertical-timeline-element-date:hover::after {
+  border-left-color: crimson !important;
+  border-right-color: crimson !important;
+}
+
+.vertical-timeline-element:nth-child(2) .vertical-timeline-element-date {
+  background-color: crimson;
+  color: white;
+}
+
+.vertical-timeline-element:nth-child(2) .vertical-timeline-element-date::after {
+  border-right-color: crimson !important;
+}
+
+.vertical-timeline-element-detail,
+.vertical-timeline-element-detail p {
+  color: black;
+  font-size: 1.5rem !important;
+  text-align: justify;
+}
+
+.vertical-timeline-element-title {
+  font-family: "Amatic SC", cursive;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bolder;
+  font-size: 3rem;
+  color: #990dd3;
+  background-color: #ffa5009c;
+}
+
+.vertical-timeline-element-subtitle {
+  color: red;
+  font-weight: bold;
+  font-family: "Saira Stencil One", cursive;
+}
+
+@media only screen and (max-width: 1170px) {
+  .vertical-timeline-element-date {
+    margin: 10px auto;
+    width: 20% !important;
+    font-size: 1.8rem !important;
+    font-weight: 200 !important;
+    height: 50px;
+    background-color: #ed143dd6;
+    color: white;
+    transition: all .5s;
+  }
+
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-date::before,
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-date::after {
+    all: unset;
+  }
+
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-date::before,
+  .vertical-timeline-element-date::before {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+    content: "";
+    height: 6px !important;
+    left: 10px;
+    position: absolute;
+    width: 6px;
+    top: 10px;
+    transition: all .5s;
+  }
+
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-date::after,
+  .vertical-timeline-element-date::after {
+    background: #fff;
+    border-bottom: 25px solid transparent !important;
+    border-left: 10px solid #ed143dd6 !important;
+    border-top: 25px solid transparent !important;
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: all .5s;
+  }
+
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-date:hover::after {
+    border-left-color: crimson !important;
+  }
+  .vertical-timeline-element:nth-child(2) .vertical-timeline-element-date::after {
+    border-left-color: crimson !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .vertical-timeline-element-date {
+    width: 30% !important;
+  }
+}
+
+@media only screen and (max-width: 596px) {
+  .vertical-timeline-element-date {
+    width: 45% !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .vertical-timeline-element-date {
+    font-size: 1.4rem !important;
+    width: 100% !important;
+    height: 40px;
+  }
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-date::after,
+  .vertical-timeline-element-date::after {
+    border-bottom: 20px solid transparent !important;
+    border-top: 20px solid transparent !important;
+  }
+}

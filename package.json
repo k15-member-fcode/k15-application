@@ -7,6 +7,7 @@
     "cors": "^2.8.5",
     "crypto-js": "^3.1.9-1",
     "firebase": "^6.6.0",
+    "match-sorter": "^4.0.2",
     "moment": "^2.24.0",
     "nodemailer": "^6.3.0",
     "nodemailer-smtp-transport": "^2.7.4",
@@ -15,9 +16,13 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-firebaseui": "^4.0.0",
+    "react-horizontal-timeline": "^1.5.3",
+    "react-icons": "^3.7.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "react-table": "^6.10.3",
+    "react-table-hoc-fixed-columns": "^2.1.1",
+    "react-vertical-timeline-component": "^2.5.0",
     "xlsx": "^0.15.1"
   },
   "scripts": {

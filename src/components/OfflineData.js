@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as moment from "moment";
-import { Button, Checkbox } from "antd";
+import { Button, Checkbox, Input } from "antd";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
 import "react-table/react-table.css";
@@ -9,13 +9,19 @@ import firebase from "firebase/app";
 import "firebase/database";
 import XLSX from "xlsx";
 import PopupInfo from "./PopupInfo";
-import { clubToString } from "../utils/utils";
 import "../resource/css/DataSheet.css";
 
 const applicationDatabase = firebase.database();
 const applicationRef = applicationDatabase.ref("applications");
 const sIdRef = applicationDatabase.ref("sID");
 const ReactTableFixedColumns = withFixedColumns(ReactTable);
+
+const style = {
+  marginTop: "10px",
+  display: "flex",
+  justifyContent: "center",
+  textAlign: "center"
+};
 
 const wscols = [
   { wch: 10 },
@@ -25,32 +31,12 @@ const wscols = [
   { wch: 30 },
   { wch: 15 },
   { wch: 30 },
-  { wch: 15 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 30 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 20 }
+  { wch: 30 }
 ];
 
-const style = {
-  marginTop: "10px",
-  display: "flex",
-  justifyContent: "center",
-  textAlign: "center"
-};
-
-const DataSheet = () => {
+const OfflineData = () => {
   const [applications, setApplication] = useState([]);
   const [isSorted, setIsSorted] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [readyEx, setReadyEx] = useState(false);
 
   useEffect(() => {
@@ -63,7 +49,7 @@ const DataSheet = () => {
     let application = [];
     applicationRef.once("value", snapshot => {
       snapshot.forEach(snap => {
-        if (typeof snap.val() === "object") {
+        if (typeof snap.val() === "object" && snap.val().confirm.isVerify) {
           application.push(snap.val());
         }
       });
@@ -73,14 +59,6 @@ const DataSheet = () => {
 
   const sortAppication = application => {
     application.sort((a, b) => {
-      let timeA = a.timeCreate;
-      let timeB = b.timeCreate;
-      if (timeA < timeB) {
-        return 1;
-      }
-      if (timeA > timeB) {
-        return -1;
-      }
       let sidA = a.personal.studentID;
       let sidB = b.personal.studentID;
       if (sidA < sidB) {
@@ -95,11 +73,35 @@ const DataSheet = () => {
     setReadyEx(true);
   };
 
+  const checkOfflineToFirebase = (cellInfo, value) => {
+    const childUID = cellInfo.original.uID;
+    const childSID = cellInfo.original.personal.studentID;
+    const verify = {};
+    verify[childSID] = value;
+    try {
+      const reason = cellInfo.original.offline.reasonOff;
+      applicationRef.child(childUID + "/offline").update({
+        isOffline: value,
+        reasonOff: reason
+      });
+    } catch (e) {
+      applicationRef.child(childUID + "/offline").update({
+        isOffline: value,
+        reasonOff: ""
+      });
+    }
+    applicationRef.child(childUID + "/offline").update({
+      isOffline: value
+    });
+
+    sIdRef.update(verify);
+    setIsSorted(false);
+  };
+
   const exportFile = () => {
-    let countVerify = 0;
     let counter = 0;
     let applicationData = [
-      ["K15 APPLICATION DATASHEET"],
+      ["K15 OFFLINE DATASHEET"],
       [
         "Mã sinh viên",
         "Họ tên",
@@ -108,134 +110,91 @@ const DataSheet = () => {
         "Email",
         "SĐT",
         "Facebook",
-        "Trạng thái",
-        "Nêu một cách ngắn gọn hiểu biết của bạn về ngành này",
-        "Bạn có kinh nghiệm như thế nào trong lĩnh vực CNTT?",
-        "Tại sao bạn lại muốn tham gia CLB F-Code?",
-        "Ưu điểm của bạn là gì?",
-        "Khuyết điểm của bạn là gì?",
-        "Điều bạn mong đợi khi tham gia CLB là gì?",
-        "Nếu trở thành thành viên chính thức, bạn sẽ làm gì để phát triển CLB?",
-        "Bạn có câu hỏi gì gửi đến CLB không?",
-        "Ngoài F-Code, bạn còn tham gia CLB nào khác?",
-        "Bạn đã sẵn sàng chấp nhận thử thách chưa?",
-        "Bạn đã đọc hết toàn bộ thông tin của form này chưa?",
-        "Ngày đăng ký"
+        "Lý do vắng (nếu có)"
       ]
     ];
     applications.forEach(application => {
-      counter++;
-      let applicationArr = [
-        application.personal.studentID,
-        application.personal.fullname,
-        application.personal.major,
-        application.personal.gender,
-        application.personal.email,
-        application.personal.phone,
-        application.personal.facebook,
-        application.confirm.isVerify ? "Đã xác nhân" : "Chưa xác nhận",
-        application.ask.knowledge,
-        application.ask.experience,
-        application.ask.reason,
-        application.ask.pros,
-        application.ask.cons,
-        application.ask.expect,
-        application.ask.dedication,
-        application.ask.question === "" ? "(trống)" : application.ask.question,
-        application.ask.otherClub === ""
-          ? "(trống)"
-          : clubToString(application.ask.otherClub),
-        application.confirm.isReady ? "Đã sẵn sàng" : "Chưa sẵn sàng",
-        application.confirm.isRead ? "Đã đọc" : "Chưa đọc",
-        application.timeCreate
-      ];
-      applicationData.push(applicationArr);
-      if (application.confirm.isVerify) {
-        countVerify++;
-      }
+      try {
+        if (application.offline.isOffline) {
+          counter++;
+          let applicationArr = [
+            application.personal.studentID,
+            application.personal.fullname,
+            application.personal.major,
+            application.personal.gender,
+            application.personal.email,
+            application.personal.phone,
+            application.personal.facebook,
+            application.offline.reasonOff
+          ];
+          applicationData.push(applicationArr);
+        }
+      } catch (e) {}
     });
     applicationData.push("");
-    applicationData.push(["Total verify", "", "", countVerify]);
-    applicationData.push(["Total", "", "", counter]);
+    applicationData.push(["Total", "", counter]);
     const wb = XLSX.utils.book_new();
     const wsAll = XLSX.utils.aoa_to_sheet(applicationData);
-    XLSX.utils.book_append_sheet(wb, wsAll, "All Applications");
+    XLSX.utils.book_append_sheet(wb, wsAll, "All Offline");
     wsAll["!cols"] = wscols;
-    let mergeRow = [XLSX.utils.decode_range("A1:T1")];
-    for (let i = 1; i <= 2; i++) {
-      let cRow = i + counter + 3;
-      let cRange = "A" + cRow + ":C" + cRow;
-      mergeRow[i] = XLSX.utils.decode_range(cRange);
-    }
+    let mergeRow = [XLSX.utils.decode_range("A1:H1")];
+    let cRow = counter + 4;
+    let cRange = "A" + cRow + ":B" + cRow;
+    mergeRow[1] = XLSX.utils.decode_range(cRange);
     wsAll["!merges"] = mergeRow;
     XLSX.writeFile(
       wb,
-      "k15-applications_" + moment().format("MMDDYYYY_HHmmss") + ".xlsx"
+      "k15-offline_" + moment().format("MMDDYYYY_HHmmss") + ".xlsx"
     );
   };
 
-  const changeVerify = (cellInfo, value) => {
-    const childUID = cellInfo.original.uID;
-    const childSID = cellInfo.original.personal.studentID;
-    const verify = {};
-    verify[childSID] = value;
-
-    applicationRef.child(childUID + "/confirm").update({
-      isVerify: value
-    });
-
-    sIdRef.update(verify);
-    setIsSorted(false);
-  };
-
-  const changeVerifyBox = cellInfo => {
-    let checked = cellInfo.original.confirm.isVerify;
+  const checkOfflineBox = cellInfo => {
+    let checked;
+    try {
+      checked = cellInfo.original.offline.isOffline;
+    } catch (err) {
+      checked = false;
+    }
     return (
       <Checkbox
         checked={checked}
         onChange={() => {
           checked = !checked;
-          changeVerify(cellInfo, checked);
+          checkOfflineToFirebase(cellInfo, checked);
         }}
-        disabled={!isEdit}
       ></Checkbox>
     );
   };
 
   const handleInputChange = (cellInfo, event) => {
-    let data = cellInfo.original.personal;
-    const childUID = cellInfo.original.uID;
-    data[cellInfo.column.id] = event.target.value;
+    const reason = event.target.value;
     if (event.charCode === 13) {
-      applicationRef.child(childUID + "/personal").update(data);
+      const childUID = cellInfo.original.uID;
+      applicationRef.child(childUID + "/offline").update({
+        isOffline: true,
+        reasonOff: reason
+      });
       setIsSorted(false);
     }
   };
 
-  const renderEditable = cellInfo => {
-    const cellValue = cellInfo.original.personal[cellInfo.column.id];
-    if (isEdit) {
-      return (
-        <input
-          placeholder="type here"
-          name="input"
-          type="text"
-          onKeyPress={handleInputChange.bind(null, cellInfo)}
-          defaultValue={cellValue}
-        />
-      );
-    } else if (cellInfo.column.id === "facebook") {
-      const fbLink = !cellValue.includes("http")
-        ? "https://" + cellValue
-        : cellValue;
-      return (
-        <a target="_blank"  rel="noopener noreferrer" href={fbLink}>
-          {cellValue}
-        </a>
-      );
-    } else {
-      return cellValue;
+  const reasonBox = cellInfo => {
+    let reason;
+    try {
+      reason = cellInfo.original.offline.reasonOff;
+    } catch (err) {
+      reason = "";
     }
+    return (
+      <input
+        type="text"
+        name="reason"
+        defaultValue={reason}
+        placeholder="nhấn enter để lưu"
+        onKeyPress={handleInputChange.bind(null, cellInfo)}
+        style={{ width: "100%" }}
+      />
+    );
   };
 
   const applicationCols = [
@@ -261,7 +220,6 @@ const DataSheet = () => {
           id: "studentID",
           width: 100,
           accessor: d => d.personal.studentID,
-          Cell: renderEditable,
           fixed: "left"
         }
       ]
@@ -271,9 +229,8 @@ const DataSheet = () => {
       columns: [
         {
           id: "fullname",
-          width: 200,
-          accessor: d => d.personal.fullname,
-          Cell: renderEditable
+          width: 250,
+          accessor: d => d.personal.fullname
         }
       ]
     },
@@ -284,7 +241,6 @@ const DataSheet = () => {
           id: "major",
           width: 70,
           accessor: d => d.personal.major,
-          Cell: renderEditable,
           filterMethod: (filter, row) => {
             if (filter.value === "all") {
               return true;
@@ -321,7 +277,6 @@ const DataSheet = () => {
       columns: [
         {
           id: "gender",
-          Cell: renderEditable,
           width: 100,
           accessor: d => d.personal.gender,
           filterMethod: (filter, row) => {
@@ -352,7 +307,6 @@ const DataSheet = () => {
       columns: [
         {
           id: "email",
-          Cell: renderEditable,
           width: 250,
           accessor: d => d.personal.email
         }
@@ -363,38 +317,51 @@ const DataSheet = () => {
       columns: [
         {
           id: "phone",
-          Cell: renderEditable,
           accessor: d => d.personal.phone,
           width: 120
         }
       ]
     },
-    {
-      Header: "Facebook",
-      columns: [
-        {
-          id: "facebook",
-          Cell: renderEditable,
-          accessor: d => d.personal.facebook,
-          width: 250
-        }
-      ]
-    },
+    // {
+    //   Header: "Facebook",
+    //   columns: [
+    //     {
+    //       id: "facebook",
+    //       accessor: d => {
+    //         const fbLink = !d.personal.facebook.includes("http")
+    //           ? "https://" + d.personal.facebook
+    //           : d.personal.facebook;
+    //         return (
+    //           <a target="_blank" rel="noopener noreferrer" href={fbLink}>
+    //             {d.personal.facebook}
+    //           </a>
+    //         );
+    //       },
+    //       width: 300
+    //     }
+    //   ]
+    // },
     {
       Header: "Trạng thái",
       columns: [
         {
-          id: "verify",
-          accessor: d => (d.confirm.isVerify ? "Đã xác nhận" : "Chưa xác nhận"),
+          id: "offline",
+          accessor: d => {
+            try {
+              return d.offline.isOffline ? "Đã check" : "Chưa check";
+            } catch (err) {
+              return "Chưa check";
+            }
+          },
           width: 120,
           filterMethod: (filter, row) => {
             if (filter.value === "all") {
               return true;
             }
             if (filter.value === "True") {
-              return row[filter.id] === "Đã xác nhận";
+              return row[filter.id] === "Đã check";
             }
-            return row[filter.id] === "Chưa xác nhận";
+            return row[filter.id] === "Chưa check";
           },
           Filter: ({ filter, onChange }) => (
             <select
@@ -411,58 +378,36 @@ const DataSheet = () => {
       ]
     },
     {
-      Header: "Ngày đăng ký",
+      Header: "Điểm danh",
+      fixed: "right",
       columns: [
         {
-          id: "timeCreate",
-          accessor: d => d.timeCreate,
-          width: 150,
-          sortMethod: (a, b) => {
-            let beginTime = moment(a, "MM/DD/YYYY - HH:mm");
-            let endTime = moment(b, "MM/DD/YYYY - HH:mm");
-            if (beginTime.isBefore(endTime)) {
-              return -1;
-            } else {
-              return 1;
-            }
-          }
+          id: "checkOffline",
+          Cell: checkOfflineBox,
+          width: 100
         }
       ]
     },
     {
-      Header: "Xác nhận",
+      Header: "Lý do vắng",
       fixed: "right",
       columns: [
         {
-          id: "checkVerify",
-          Cell: changeVerifyBox,
-          width: 100
+          id: "reasonBox",
+          Cell: reasonBox,
+          width: 300
         }
       ]
     }
   ];
 
   return (
-    <div className="DataSheet">
+    <div className="OfflineData">
       <div style={style}>
         <div>
-          <h1>K15 Applications Datasheet</h1>
+          <h1>K15 Offline Checking Datasheet</h1>
           <Button type="dashed" onClick={exportFile} disabled={!readyEx}>
             Export to Excel
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => {
-              setIsEdit(!isEdit);
-            }}
-          >
-            Edit: {isEdit ? "ON" : "OFF"}
-          </Button>
-          <Button type="default" style={{background: "#52c41a", color: "#fff"}} >
-            <a href="/admin/offline">Điểm danh</a>
-          </Button>
-          <Button type="default" style={{background: "#c49f09", color: "#fff"}} >
-            <a href="/admin/score-interview">Điểm phỏng vấn</a>
           </Button>
           <ReactTableFixedColumns
             style={{
@@ -493,4 +438,4 @@ const DataSheet = () => {
   );
 };
 
-export default DataSheet;
+export default OfflineData;

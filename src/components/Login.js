@@ -3,18 +3,20 @@ import { Icon, Button } from "antd";
 import firebase from "firebase/app";
 import "firebase/auth";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import * as moment from "moment";
 
 const Login = props => {
   const [isLogin, setLogin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dbUser, setDbUser] = useState(false);
-
+  const [isValid, setIsValid] = useState(null);
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       setLogin(!!user);
     });
     if (isLogin) {
       checkUserOnFirebase();
+      checkValidTime();
     }
     setDbUser(props.dbUser);
   });
@@ -50,6 +52,16 @@ const Login = props => {
       }
     });
   };
+
+  const checkValidTime = () => {
+    const dateEnd = moment("2019-11-01 00:00:00", "YYYY-MM-DD HH:mm:ss");
+    const dateStart = moment();
+    if (dateEnd.diff(dateStart) > 0) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  };
   return (
     <div className="Login">
       {loading ? (
@@ -59,20 +71,33 @@ const Login = props => {
       ) : (
         <div>
           {isLogin ? (
-            <div className="div-center">
-              <Icon className="icon-success icon-center" type="check-circle" />
-              <h2 className="heading-center">Đăng nhập thành công </h2>
-              <div className="Login-Button">
-                <div className="btn-container">
-                  <Button
-                    type="primary"
-                    className="btn-right"
-                    onClick={nextStep}
-                  >
-                    Tiếp tục
-                  </Button>
+            <div>
+              {isValid ? (
+                <div className="div-center">
+                  <Icon
+                    className="icon-success icon-center"
+                    type="check-circle"
+                  />
+                  <h2 className="heading-center">Đăng nhập thành công </h2>
+                  <div className="Login-Button">
+                    <div className="btn-container">
+                      <Button
+                        type="primary"
+                        className="btn-right"
+                        onClick={nextStep}
+                      >
+                        Tiếp tục
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="div-center">
+                  <p className="p__intruction--sub">
+                    Xin lỗi, thời gian đăng ký thành viên đã kết thúc.
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="div-center">

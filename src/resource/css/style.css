@@ -211,6 +211,11 @@ body {
   animation-fill-mode: backwards;
 }
 
+.btn--header {
+  margin: 10px;
+  width: 250px;
+}
+
 .btn-text {
   transition: all 0.2s;
 }
@@ -343,6 +348,7 @@ body {
   perspective: 150rem;
   position: relative;
   height: 45rem;
+  cursor: pointer;
 }
 
 .card__side {
@@ -940,6 +946,7 @@ form .btn-container {
   width: 80%;
   padding: 50px 10px;
   margin-left: 10%;
+  min-height: 30vh;
 }
 
 .heading-center {
@@ -954,6 +961,9 @@ form,
   margin-top: 10px;
 }
 
+.firebaseui-card-content form {
+  width: 100%;
+}
 .AskForm textarea {
   resize: none;
 }

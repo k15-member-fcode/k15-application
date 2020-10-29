@@ -11,13 +11,17 @@ import { dataForm } from "../utils/dataForm";
 import { MAJOR_LIST, GENDER_LIST } from "../utils/constant";
 
 const processData = submitData => {
-  const fullname = submitData.fullname.toUpperCase();
-  const studentID = submitData.studentID;
-  const major = submitData.major;
-  const gender = submitData.gender;
+  const fullname =
+    submitData.fullname === undefined ? "" : submitData.fullname.toUpperCase();
+  const studentID =
+    submitData.studentID === undefined ? "" : submitData.studentID;
+  const major = submitData.major === undefined ? "" : submitData.major;
+  const gender = submitData.gender === undefined ? "" : submitData.gender;
   const email = firebase.auth().currentUser.email;
-  const phone = submitData.phoneNumber;
-  const facebook = submitData.facebook.toLowerCase();
+  const phone =
+    submitData.phoneNumber === undefined ? "" : submitData.phoneNumber;
+  const facebook =
+    submitData.facebook === undefined ? "" : submitData.facebook.toLowerCase();
   return {
     fullname,
     studentID,
@@ -124,17 +128,20 @@ const PersonalForm = props => {
       let facebook = value.trim();
       if (facebook.length !== 0) {
         if (submitStatus.current) {
-          if (!facebookValidation.test(facebook) || facebook.endsWith("facebook.com/")) {
+          if (
+            !facebookValidation.test(facebook) ||
+            facebook.endsWith("facebook.com/")
+          ) {
             callback(dataForm.personal.facebook.message.validation);
           } else {
             callback();
           }
         }
       } else {
-        callback(dataForm.personal.phoneNumber.message.required);
+        callback(dataForm.personal.facebook.message.required);
       }
     } else {
-      callback(dataForm.personal.phoneNumber.message.required);
+      callback(dataForm.personal.facebook.message.required);
     }
   };
   return (
@@ -163,7 +170,7 @@ const PersonalForm = props => {
         </Form.Item>
         <Form.Item label="Mã sinh viên">
           {getFieldDecorator("studentID", {
-            rules: [{required: true, validator: handleStudentId }],
+            rules: [{ required: true, validator: handleStudentId }],
             initialValue: processedData.studentID
           })(
             <Input
@@ -224,7 +231,7 @@ const PersonalForm = props => {
         </Form.Item>
         <Form.Item label="Số điện thoại">
           {getFieldDecorator("phoneNumber", {
-            rules: [{required: true, validator: handlePhoneNumber }],
+            rules: [{ required: true, validator: handlePhoneNumber }],
             initialValue: processedData.phone
           })(
             <Input size="large" placeholder="0xxxxxxxxx" autoComplete="off" />
@@ -232,7 +239,7 @@ const PersonalForm = props => {
         </Form.Item>
         <Form.Item label="Link Facebook">
           {getFieldDecorator("facebook", {
-            rules: [{required: true, validator: handleFacebook }],
+            rules: [{ required: true, validator: handleFacebook }],
             initialValue: processedData.facebook
           })(
             <Input

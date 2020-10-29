@@ -4,18 +4,18 @@ import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import DataSheet from "./DataSheet";
+import InterviewData from "./InterviewData";
 
 const questionDatabase = firebase.database();
 const adminRef = questionDatabase.ref("admin");
 
-const Admin = () => {
+const InterviewAdmin = () => {
   const [isLogin, setLogin] = useState(false);
   const [isAuth, setAuth] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "K15 Applications Management";
+    document.title = "K15 Interview Admin";
     firebase.auth().onAuthStateChanged(user => {
       setLogin(!!user);
     });
@@ -45,9 +45,8 @@ const Admin = () => {
       signInSuccessWithAuthResult: () => false
     }
   };
-
   return (
-    <div className="AdminPage" style={{ textAlign: "center" }}>
+    <div className="InterviewAdmin" style={{ textAlign: "center" }}>
       {isLogin ? (
         <div>
           <h3>Welcome {firebase.auth().currentUser.displayName}</h3>
@@ -55,13 +54,13 @@ const Admin = () => {
             Sign out
           </Button>
           {isLoading ? (
-            <div className="div-center" style={{marginTop: "15px"}}>
+            <div className="div-center" style={{ marginTop: "15px" }}>
               <Icon type="loading" className="icon-primary icon-center" />
             </div>
           ) : (
             <div>
               {isAuth ? (
-                <DataSheet />
+                <InterviewData />
               ) : (
                 <div>Sorry! You can not access this page</div>
               )}
@@ -81,4 +80,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default InterviewAdmin;

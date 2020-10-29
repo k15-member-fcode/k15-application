@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as moment from "moment";
+import CryptoJS from "crypto-js";
 import { Drawer, Button, Icon, Table } from "antd";
 import firebase from "firebase/app";
 import "firebase/functions";
@@ -16,7 +17,7 @@ const ConfirmDrawer = props => {
   useEffect(() => {
     setSend(props.isSend);
   }, [props.isSend]);
-  
+
   const data = props.data;
   const onChange = props.onChange;
   const submitData = props.submit;
@@ -156,6 +157,7 @@ const ConfirmDrawer = props => {
   const confirmData = () => {
     if (!isError && data.confirm.tryMail > 0) {
       let emailMessage = firebase.functions().httpsCallable("emailMessage");
+      const time = CryptoJS.AES.encrypt(moment().format("MMDDYYYYhhmmssa"), firebase.auth().currentUser.uid).toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
       emailMessage({
         info: {
           name: data.personal.fullname,
@@ -164,7 +166,7 @@ const ConfirmDrawer = props => {
           facebook: data.personal.facebook,
           sid: data.personal.studentID,
           uid: firebase.auth().currentUser.uid,
-          time: moment().format("MMDDYYYYHHmmss")
+          time: time
         }
       })
         .then(function(result) {
@@ -300,26 +302,26 @@ const ConfirmDrawer = props => {
           size="middle"
         />
         <div className="instruction-container">
-          <div className="margin-top-sm">
-            <Icon type="warning" className="icon-warning" />
-            &nbsp;
-            <span>
-              Nếu có sai sót, hãy nhấn nút chỉnh sửa để quay về form đăng ký.
+        <div className="margin-top-sm">
+          <Icon type="warning" className="icon-warning" />
+          &nbsp;
+          <span>
+            Nếu có sai sót, hãy nhấn nút chỉnh sửa để quay về form đăng ký.
+          </span>
+        </div>
+        <div className="margin-top-sm">
+          <Icon type="info-circle" className="icon-primary" />
+          &nbsp;
+          <span>
+            Số lần gửi lại mail xác nhận còn:{" "}
+            <span style={{ color: "red" }}>
+              {data.confirm.tryMail > 0
+                ? data.confirm.tryMail
+                : "Đạt giới hạn, vui lòng liên hệ clb để giải quyết"}
             </span>
-          </div>
-          <div className="margin-top-sm">
-            <Icon type="info-circle" className="icon-primary" />
-            &nbsp;
-            <span>
-              Số lần gửi lại mail xác nhận còn:{" "}
-              <span style={{ color: "red" }}>
-                {data.confirm.tryMail > 0
-                  ? data.confirm.tryMail
-                  : "Đạt giới hạn, vui lòng liên hệ clb để giải quyết"}
-              </span>
-              .
-            </span>
-          </div>
+            .
+          </span>
+        </div>
         </div>
         <div
           style={{

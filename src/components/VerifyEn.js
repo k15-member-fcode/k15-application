@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Icon, Button } from "antd";
 import firebase from "firebase/app";
 import * as moment from "moment";
+import CryptoJS from "crypto-js";
 import "firebase/database";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Footer from "./Common/Footer";
@@ -25,9 +26,12 @@ const Verify = () => {
 
     const sID = data.sid;
 
-    const dateStart = moment(data.time, "MMDDYYYYHHmmss");
+    const timeInBytes = CryptoJS.AES.decrypt(data.time.replace('xMl3Jk', '+' ).replace('Por21Ld', '/').replace('Ml32', '='), uID);
+    const timeDecode = timeInBytes.toString(CryptoJS.enc.Utf8);
+    const dateStart = moment(timeDecode, "MMDDYYYYhhmmssa");
     const dateEnd = moment();
 
+    console.log(timeDecode);
     const differenceInMs = dateEnd.diff(dateStart);
 
     if (differenceInMs / 1000 <= 3600 && differenceInMs / 1000 >= 0) {
