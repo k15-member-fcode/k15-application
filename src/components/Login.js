@@ -54,7 +54,7 @@ const Login = props => {
   };
 
   const checkValidTime = () => {
-    const dateEnd = moment("2019-11-01 00:00:00", "YYYY-MM-DD HH:mm:ss");
+    const dateEnd = moment("2021-08-10 00:00:00", "YYYY-MM-DD HH:mm:ss");
     const dateStart = moment();
     if (dateEnd.diff(dateStart) > 0) {
       setIsValid(true);
