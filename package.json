@@ -24,7 +24,7 @@
     "react-table": "^6.10.3",
     "react-table-hoc-fixed-columns": "^2.1.1",
     "react-vertical-timeline-component": "^2.5.0",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
